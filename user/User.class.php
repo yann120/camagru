@@ -1,7 +1,8 @@
 <?php
     Class User {
 
-        function __construct(array $kwargs) {
+        function __construct(array $kwargs)
+        {
 
         }
 
@@ -17,6 +18,16 @@
             if (isset($attribut) && isset($value))
                 $this->$attribut = $value;
             return;
+        }
+
+        function __destruct()
+        {
+
+        }
+
+        function create(array $kwargs)
+        {
+
         }
     }
 ?>
