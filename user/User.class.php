@@ -43,7 +43,7 @@
 
         function create($newuser)
         {
-            echo "ICI";
+            $newuser[2] = hash("whirlpool", $newuser[2]);
             $sql = "INSERT INTO user (username, email, password) VALUES (?,?,?)";
             $this->base->prepare($sql)->execute($newuser);
             return (true);
