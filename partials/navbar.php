@@ -1,3 +1,8 @@
+<?php 
+  session_start();
+  $user = new User();
+  $userdata = $user->userSignedIn($_SESSION['session_id']);
+?>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
 
@@ -75,12 +80,20 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+        <?php if (!$userdata) { ?>
           <a class="button is-primary" href="/user/sign_up.php">
             <strong>Sign up</strong>
           </a>
           <a class="button is-light" href="/user/login.php">
             Log in
           </a>
+        <?php }
+          else 
+          { ?>
+          <a class="button is-danger" href="/index.php?action=logout">
+            <strong>Log out</strong>
+          </a>
+          <?php } ?>
         </div>
       </div>
     </div>

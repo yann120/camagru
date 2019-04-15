@@ -1,3 +1,4 @@
+<?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,10 +13,11 @@
     <body>
 		<div class="container">
 			<h1 class="title is-1 has-text-centered">Log In</h1>
+			<form action="" name="login" method="POST">
 			<div class="field">
 			<label class="label">Username</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input" type="text" placeholder="Username">
+				<input class="input" type="text" name ="username" placeholder="Username">
 				<span class="icon is-small is-left">
 				<i class="fas fa-user"></i>
 				</span>
@@ -26,7 +28,7 @@
 			<div class="field">
 			<label class="label">Password</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input" type="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+				<input class="input" type="password" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
 				<span class="icon is-small is-left">
 				<i class="fas fa-lock"></i>
 			</div>
@@ -36,10 +38,21 @@
 			<div class="control">
 			<input type="submit" class="button is-success" name="submit" value="OK">
 			</div>
+			</form>
 			<div class="control">
-				<button class="button is-danger" onclick="location.href='/index.php'"> Cancel</button>
+				<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
 			</div>
 			</div>
 		</div>
+		<?php 
+		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'])
+		{
+			$usertologin = array($_POST['username'], $_POST['password']);
+			if ($user->login($usertologin))
+				echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
+			else
+				echo "<h3 class='title is-3 has-text-centered'>Identifiant ou mot de passe érroné :(</h3>";
+		}
+		?>
     </body>
 </html>
