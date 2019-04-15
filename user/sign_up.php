@@ -13,10 +13,11 @@
     <body>
 		<h1 class="title is-1 has-text-centered">Sign up</h1>
 		<div class="container">
+		<form action="" name="sign_up" method="POST">
 			<div class="field">
 			<label class="label">Username</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-success" type="text" placeholder="Username">
+				<input class="input is-success" type="text" name="username" placeholder="Username">
 				<span class="icon is-small is-left">
 				<i class="fas fa-user"></i>
 				</span>
@@ -30,7 +31,7 @@
 			<div class="field">
 			<label class="label">Email</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-danger" type="email" placeholder="Email">
+				<input class="input is-danger" type="email" name="email" placeholder="Email">
 				<span class="icon is-small is-left">
 				<i class="fas fa-envelope"></i>
 				</span>
@@ -44,7 +45,7 @@
 			<div class="field">
 			<label class="label">Password</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input" type="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+				<input class="input" type="password" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
 				<span class="icon is-small is-left">
 				<i class="fas fa-lock"></i>
 			</div>
@@ -58,10 +59,17 @@
 				<button class="button is-danger" onclick="location.href='/index.php'"> Cancel</button>
 			</div>
 			</div>
+			</form>
 		</div>
 		<?php 
+		if ($_POST['submit'] === "OK")
+		{
 			$users = new User();
-			$users->create();
+			$newuser = array($_POST['username'], $_POST['email'], $_POST['password']);
+			if ($users->create($newuser))
+				echo "<h3 class='title is-3 has-text-centered'>Compte Créé. <a href='/user/login.php'>Cliquez ici pour vous connecter</a></h3>";
+		}
 		?>
     </body>
+		
 </html>

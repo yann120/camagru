@@ -33,12 +33,20 @@
             $this->base = null;
         }
 
-        function create()
+        function displayUser()
         {
             $retour = $this->base->query('SELECT * FROM user');
             while ($data = $retour->fetch()){
-                echo $data['username'].' '.$data['email'].' '.$data['password']."\n";
+                echo $data['username'].' '.$data['email'].' '.$data['password']."<br>";
               }
+        }
+
+        function create($newuser)
+        {
+            echo "ICI";
+            $sql = "INSERT INTO user (username, email, password) VALUES (?,?,?)";
+            $this->base->prepare($sql)->execute($newuser);
+            return (true);
         }
     }
 ?>
