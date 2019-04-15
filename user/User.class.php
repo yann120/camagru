@@ -3,14 +3,15 @@
         public $base;
         function __construct()
         {
-            echo "test mysql dans classe<br>" ;
+            // echo "test mysql dans classe<br>" ;
             try {
-                $base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
+                $this->base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
               }
-              $base->exec("SET CHARACTER SET utf8");
+              $this->base->exec("SET CHARACTER SET utf8");
+              
         }
 
         function __get($attribut)
@@ -29,18 +30,12 @@
 
         function __destruct()
         {
-            // $base = null;
+            $this->base = null;
         }
 
         function create()
         {
-            echo "je suis iciii";
-            echo "LA";
-
-            $base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
-            echo $base;
-            $retour = $base->query('SELECT * FROM user');
-            print_r($retour);
+            $retour = $this->base->query('SELECT * FROM user');
             while ($data = $retour->fetch()){
                 echo $data['username'].' '.$data['email'].' '.$data['password']."\n";
               }
