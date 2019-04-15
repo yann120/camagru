@@ -1,4 +1,5 @@
 <?php include '../partials/navbar.php' ?>
+<?php require 'User.class.php' ?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -58,5 +59,9 @@
 			</div>
 			</div>
 		</div>
+		<?php 
+			$users = new User();
+			$users->create();
+		?>
     </body>
 </html>
