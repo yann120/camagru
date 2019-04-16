@@ -17,7 +17,7 @@
 			<div class="field">
 			<label class="label">Username</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input" type="text" name ="username" placeholder="Username">
+				<input class="input" type="text" name ="username"  required placeholder="Username">
 				<span class="icon is-small is-left">
 				<i class="fas fa-user"></i>
 				</span>
@@ -28,7 +28,7 @@
 			<div class="field">
 			<label class="label">Password</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input" type="password" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+				<input class="input" type="password" placeholder="Password" required name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
 				<span class="icon is-small is-left">
 				<i class="fas fa-lock"></i>
 			</div>

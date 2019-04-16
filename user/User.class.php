@@ -33,17 +33,34 @@
             $this->base = null;
         }
 
-        function displayUser()
+        function displayUser($session_id)
         {
-            $retour = $this->base->query('SELECT * FROM user');
+            $retour = $this->base->query("SELECT * FROM user WHERE session_id = '$session_id'");
             while ($data = $retour->fetch()){
                 echo $data['username'].' '.$data['email'].' '.$data['password']."<br>";
               }
         }
 
+
         function create($newuser)
         {
             $newuser[2] = hash("whirlpool", $newuser[2]);
+            $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser[0]' OR email = '$newuser[1]'");
+            if ($retour->fetch())
+                return (false);
+            $sql = "INSERT INTO user (username, email, password) VALUES (?,?,?)";
+            $this->base->prepare($sql)->execute($newuser);
+            return (true);
+        }
+
+        function modif($user)
+        {
+            if ($newuser[2] && $newuser[3])
+            {
+                $newuser[2] = hash("whirlpool", $newuser[2]);
+                $newuser[3] = hash("whirlpool", $newuser[3]);
+                //work in progress
+            }
             $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser[0]' OR email = '$newuser[1]'");
             if ($retour->fetch())
                 return (false);
