@@ -79,14 +79,14 @@
                 return;
             }
             if ($_POST['oldpassword'] && $_POST['newpassword'])
-                $usertomodif = array($userdata[session_id], $_POST['username'], $_POST['email'], $_POST['oldpassword'], $_POST['newpassword']);
+                $usertomodif = array('session_id' => $userdata[session_id], 'username' => $_POST['username'], 'email' => $_POST['email'], 'oldpassword' => $_POST['oldpassword'], 'newpassword' => $_POST['newpassword']);
             else if (($_POST['oldpassword'] && !$_POST['newpassword']) || (!$_POST['oldpassword'] && $_POST['newpassword']))
             {
                 echo "<h3 class='title is-3 has-text-centered'>L'ancien et le nouveau mot de passe sont requis</a></h3>";
                 return;
             }
             else
-                $usertomodif = array($userdata[session_id], $_POST['username'], $_POST['email']);
+                $usertomodif = array('session_id' => $userdata[session_id], 'username' => $_POST['username'], 'email' => $_POST['email']);
 			if ($user->modif($usertomodif))
 				echo "<h3 class='title is-3 has-text-centered'>Compte modifié. <a href='/index.php'>Cliquez ici pour revenir sur la page d'accueil</a></h3>";
 			else

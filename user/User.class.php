@@ -53,18 +53,29 @@
             return (true);
         }
 
-        function modif($user)
+        function modif($newuser)
         {
-            if ($newuser[2] && $newuser[3])
+            if ($newuser['oldpassword'] && $newuser['newpassword'])
             {
-                $newuser[2] = hash("whirlpool", $newuser[2]);
-                $newuser[3] = hash("whirlpool", $newuser[3]);
-                //work in progress
+                $newuser['oldpassword'] = hash("whirlpool", $newuser['oldpassword']);
+                $newuser['newpassword'] = hash("whirlpool", $newuser['newpassword']);
+                $retour = $this->base->query("SELECT password FROM user WHERE username = '$newuser[username]'");
+                $data = $retour->fetch();
+                if ($data)
+                {
+                    if ($data[password] === $newuser[oldpassword])
+                        $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', password = '$newuser[newpassword]' WHERE session_id = '$newuser[session_id]'";
+                        else
+                            return (false);
+                }
             }
-            $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser[0]' OR email = '$newuser[1]'");
-            if ($retour->fetch())
-                return (false);
-            $sql = "INSERT INTO user (username, email, password) VALUES (?,?,?)";
+            else
+                $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]' WHERE session_id = '$newuser[session_id]'";
+            // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
+            // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
+            // if ($retour->fetch())
+            //     return (false);
+            echo $sql;
             $this->base->prepare($sql)->execute($newuser);
             return (true);
         }
