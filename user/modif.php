@@ -105,10 +105,9 @@ if ($userdata)
 					echo "<h3 class='title is-3 has-text-centered'>Erreur</h3>";
 			}
 }
-else {
+else
 	header("Location: /index.php");
-}
-			?>
+?>
     </body>
 		
 </html>
