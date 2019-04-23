@@ -50,8 +50,8 @@
         Home
       </a>
 
-      <a class="navbar-item">
-        Documentation
+      <a class="navbar-item" href="/galerie.php">
+        Galerie
       </a>
 
       <div class="navbar-item has-dropdown is-hoverable">
