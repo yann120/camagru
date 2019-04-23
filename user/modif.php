@@ -1,5 +1,12 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
+<?php 
+if ($_GET[action] === "delete")
+    {
+        if ($user->delete($userdata))
+            echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
+    }
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -65,7 +72,10 @@
 			<input type="submit" class="button is-success" name="submit" value="OK">
 			</div>
 			<div class="control">
-				<button class="button is-danger" onclick="location.href='/index.php'"> Cancel</button>
+				<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
+			</div>
+			<div class="control">
+				<a class="button is-danger" href = "/user/modif.php?action=delete" onclick="return confirm('Êtes-vous sur de supprimer votre compte ?')">Supprimer mon compte</a>
 			</div>
 			</div>
 			</form>

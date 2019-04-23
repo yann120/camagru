@@ -1,6 +1,7 @@
 <?php
     Class User {
-        public $base;
+        private $base;
+
         function __construct()
         {
             session_start();
@@ -78,6 +79,13 @@
             echo $sql;
             $this->base->prepare($sql)->execute($newuser);
             return (true);
+        }
+
+        function delete($user)
+        {
+            $sql = "DELETE FROM user WHERE session_id = '$user[session_id]'";
+            if ($this->base->prepare($sql)->execute())
+                return (true);
         }
 
         function login($usertologin)

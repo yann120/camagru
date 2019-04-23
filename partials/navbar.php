@@ -90,6 +90,9 @@
         <?php }
           else 
           { ?>
+          <a class="button is-primary" href="/user/modif.php">
+            <strong>Modify account</strong>
+          </a>
           <a class="button is-danger" href="/index.php?action=logout">
             <strong>Log out</strong>
           </a>
