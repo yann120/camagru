@@ -1,5 +1,6 @@
 <?php require 'User.class.php'?>
-<?php include '../partials/navbar.php' ?>
+<?php require '../partials/helper.php'?>
+<?php include '../partials/navbar.php'?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -66,7 +67,7 @@
 		{
 			$newuser = array($_POST['username'], $_POST['email'], $_POST['password']);
 			if ($user->create($newuser))
-				echo "<h3 class='title is-3 has-text-centered'>Compte Créé. <a href='/user/login.php'>Cliquez ici pour vous connecter</a></h3>";
+				echo "<h3 class='title is-3 has-text-centered'>Validez votre email puis <a href='/user/login.php'>Cliquez ici pour vous connecter</a></h3>";
 			else
 				echo "<h3 class='title is-3 has-text-centered'>Ce compte existe déjà</h3>";
 		}

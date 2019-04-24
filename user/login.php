@@ -51,7 +51,7 @@
 			if ($user->login($usertologin))
 				echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
 			else
-				echo "<h3 class='title is-3 has-text-centered'>Identifiant ou mot de passe érroné :(</h3>";
+				echo "<h3 class='title is-3 has-text-centered'>Compte inexistant ou non vérifié</h3>";
 		}
 		?>
     </body>

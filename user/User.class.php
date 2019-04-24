@@ -42,16 +42,35 @@
               }
         }
 
-
         function create($newuser)
         {
             $newuser[2] = hash("whirlpool", $newuser[2]);
+            $newuser[3] = uniqid();
             $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser[0]' OR email = '$newuser[1]'");
             if ($retour->fetch())
                 return (false);
-            $sql = "INSERT INTO user (username, email, password) VALUES (?,?,?)";
+            $sql = "INSERT INTO user (username, email, password, user_verification) VALUES (?,?,?,?)";
             $this->base->prepare($sql)->execute($newuser);
+            send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n Merci pour ton inscription sur Camagru.\n Pour valider ton compte, merci de cliquer sur ce lien : \n http://localhost:8080/index.php?user_verification=$newuser[3] \n A bientôt!\n");
+            // send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n ");
             return (true);
+        }
+
+        function user_validation($verification_id)
+        {
+            if ($verification_id)
+            {
+                $retour = $this->base->query("SELECT * FROM user WHERE user_verification = '$verification_id'");
+                if (!$retour->fetch())
+                    return (false);
+                $sql = "UPDATE user SET user_verification = NULL WHERE user_verification = '$verification_id'";
+                $this->base->prepare($sql)->execute();
+                return (true);
+                // if ($this->base->prepare($sql)->execute())
+                //     return (true);
+                // else
+                //     return (false);
+            }
         }
 
         function modif($newuser)
@@ -91,11 +110,11 @@
         function login($usertologin)
         {
             $usertologin[1] = hash("whirlpool", $usertologin[1]);
-            $retour = $this->base->query("SELECT password FROM user WHERE username = '$usertologin[0]'");
+            $retour = $this->base->query("SELECT password, user_verification FROM user WHERE username = '$usertologin[0]'");
             $data = $retour->fetch();
             if ($data)
             {
-                if ($data[password] === $usertologin[1])
+                if ($data[password] === $usertologin[1] && !$data[user_verification])
                 {
                     $session_id = uniqid();
                     $_SESSION[session_id] = $session_id;
