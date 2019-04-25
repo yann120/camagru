@@ -6,6 +6,5 @@ function send_mail($email, $subject, $message)
             'Reply-To: camagru@42.fr' . "\r\n" .
             'X-Mailer: PHP/' . phpversion();
     mail($email, $subject, $message, $headers);
-    echo "email: $email\n$subject\n$message";
 }
 ?>

@@ -95,7 +95,6 @@
             // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
             // if ($retour->fetch())
             //     return (false);
-            echo $sql;
             $this->base->prepare($sql)->execute($newuser);
             return (true);
         }
@@ -130,7 +129,6 @@
         {
             if ($session_id && $this->userSignedIn($session_id))
             {
-                echo "la";
                 setcookie("session_id", "", time()-3600);
                 $sql = "UPDATE user SET session_id = NULL WHERE session_id = '$session_id'";
                 $this->base->prepare($sql)->execute();
@@ -139,6 +137,41 @@
             return (false);
         }
 
+        function resetPasswordRequestP1($email)
+        {
+            if ($email)
+            {
+                $password_reset = uniqid();
+                $retour = $this->base->query("SELECT * FROM user WHERE email = '$email'");
+                if (!$retour->fetch())
+                    return (false);
+                $sql = "UPDATE user SET password_reset = '$password_reset' WHERE email = '$email'";
+                $this->base->prepare($sql)->execute();
+                send_mail($email, "Reinitialisation du mot de passe Camagru", "Bonjour!\n Nous avons recu une demande de reinitialisation de mot de passe sur Camagru.\n Pour le reinitialiser, merci de cliquer sur ce lien : \n http://localhost:8080/user/reset_password.php?password_reset=$password_reset \n A bientôt!\n");
+                return (true);
+            }
+        }
+
+        function resetPasswordRequestP2($password_reset)
+        {
+            if ($password_reset)
+            {
+                $retour = $this->base->query("SELECT * FROM user WHERE password_reset = '$password_reset'");
+                $result = $retour->fetch();
+                if (!$result)
+                    return (false);
+                $newpassword = password_hash(uniqid(), PASSWORD_BCRYPT);
+                $encryptedpassword = hash("whirlpool", $newpassword);
+                $sql = "UPDATE user SET password_reset = NULL, password = '$encryptedpassword' WHERE password_reset = '$password_reset'";
+                send_mail($result[email], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
+                $this->base->prepare($sql)->execute();
+                return (true);
+                // if ($this->base->prepare($sql)->execute())
+                //     return (true);
+                // else
+                //     return (false);
+            }
+        }
         function userSignedIn($session_id)
         {
             if ($session_id)
