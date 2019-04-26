@@ -44,10 +44,12 @@
             if (!in_array($extension_upload,$valid_extensions))
                 echo "Extension incorrecte. Seul les images jpg, jpeg et PNG sont autorises";
             $filename = uniqid();
-            $directory = "/public/";
+            $directory = "../public/";
             mkdir($directory.$user_id, 0777, true);
-            $file = $directory.$user_id."/".$filename.".".$extension_upload;
+            $file = "/public/".$user_id."/".$filename.".".$extension_upload;
+            echo $file."\n";
             $resultat = move_uploaded_file($_FILES['picture']['tmp_name'], "..".$file);
+            echo $_FILES['picture']['tmp_name']."\n";
             if ($resultat)
             {
                 echo "Transfert réussi";
@@ -64,6 +66,17 @@
         {
             $sql = "INSERT INTO images (user_id, path) VALUES ('$user_id','$path')";
             $this->base->prepare($sql)->execute();
+        }
+
+        function showAll()
+        {
+            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC";
+            $retour = $this->base->query($sql);
+            $allpictures = [];
+            while ($data = $retour->fetch())
+                array_push($allpictures, $data);
+            print_r($allpictures);
+            return ($allpictures);
         }
     }
 ?>
