@@ -1,13 +1,21 @@
 <?php require './user/User.class.php';
 include './partials/navbar.php';
 require_once 'montage/Images.class.php';
+require_once 'like_comments/Like.class.php';
+$image = new Images;
+$like = new Like;
+$allimages = $image->showAll();
 if ($_GET[action] === "logout")
-    {
-        if ($user->logout($_SESSION['session_id']))
-            echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
-    }
-    $image = new Images;
-    $allimages = $image->showAll();
+{
+    if ($user->logout($_SESSION['session_id']))
+        echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
+}
+if ($_GET[like]  && $userdata)
+{
+    $image_id = intval($_GET[like]);
+    $like->likeUnlike($userdata[id], $image_id);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -18,12 +26,14 @@ if ($_GET[action] === "logout")
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
         <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
         <link rel="stylesheet" type = "text/css" href="main.css">
+        <script src="script.js"></script>
     </head>
     <body>
         <h1 class="title is-1 has-text-centered">Galerie</h1>
         <div class="container is-fluid">
         <?php
             foreach ($allimages as $image) {
+                $liked = $like->isLiked($userdata[id],$image[image_id]);
                 echo "<div class='card'>
                 <div class='card-image'>
                     <figure class='image is-4by3'>
@@ -34,17 +44,18 @@ if ($_GET[action] === "logout")
                     <div class='media'>
                         <div class='media-left'></div>
                         <div class='media-content'>
-                            <p class='title is-4'>John Smith</p>
-                            <p class='subtitle is-6'>@johnsmith</p>
+                            <p class='title is-4'>$image[username]</p>
+                            <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
                         </div>
                     </div>
-                    <time datetime='2016-1-1'>11:09 PM - 1 Jan 2016</time>
+                    <time datetime='$image[creation_date]'>$image[creation_date]</time>
                 </div>
                 <footer class='card-footer'>
-                    <a href='#' class='card-footer-item'>
+                    <a href='galerie.php?like=$image[image_id]' id='$image[image_id]' class='card-footer-item $liked'>
                         <span class='icon'>
                             <i class='fas fa-thumbs-up'></i>
                         </span>
+                        Like
                     </a>
                     <a href='#' class='card-footer-item'>Comment</a>
                 </footer>

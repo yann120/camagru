@@ -70,12 +70,12 @@
 
         function showAll()
         {
-            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC";
+            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email, images.id AS image_id FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC";
             $retour = $this->base->query($sql);
             $allpictures = [];
             while ($data = $retour->fetch())
                 array_push($allpictures, $data);
-            print_r($allpictures);
+            // print_r($allpictures);
             return ($allpictures);
         }
     }
