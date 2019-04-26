@@ -1,5 +1,18 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
+<?php
+if($_GET[message] === "notloggedin")
+{
+		echo "<article class='message is-danger'>
+		<div class='message-header'>
+			<p>Page réservée</p>
+		</div>
+		<div class='message-body'>
+			L'accès à cette page est réservée aux utilisateurs inscrits. Merci de vous connecter pour y accéder.
+		</div>
+	</article>";
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>

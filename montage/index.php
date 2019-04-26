@@ -3,6 +3,8 @@ require '../user/User.class.php';
 require '../partials/helper.php';
 include '../partials/navbar.php';
 require_once 'Images.class.php';
+if (!$userdata)
+	header("Location: ../user/login.php?message=notloggedin");
     $image = new Images;
     if ($_POST['submit'])
         $image->upload($userdata[id]);

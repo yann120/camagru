@@ -106,7 +106,7 @@ if ($userdata)
 			}
 }
 else
-	header("Location: /index.php");
+	header("Location: ./login.php?message=notloggedin");
 ?>
     </body>
 		

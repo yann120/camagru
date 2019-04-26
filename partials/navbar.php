@@ -53,6 +53,11 @@
       <a class="navbar-item" href="/galerie.php">
         Galerie
       </a>
+    <?php if ($userdata) { ?>
+      <a class="navbar-item" href="/montage">
+        Montage
+      </a>
+    <?php } ?>
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
