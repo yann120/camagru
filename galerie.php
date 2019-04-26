@@ -40,15 +40,10 @@ if ($_GET[like]  && $userdata)
                     <img src='$image[path]' alt='Placeholder image'>
                     </figure>
                 </div>
-                <div class='card-content'>
-                    <div class='media'>
-                        <div class='media-left'></div>
-                        <div class='media-content'>
+                <div class='card-content has-text-centered'>
                             <p class='title is-4'>$image[username]</p>
                             <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
-                        </div>
-                    </div>
-                    <time datetime='$image[creation_date]'>$image[creation_date]</time>
+                            <time datetime='$image[creation_date]'>$image[creation_date]</time>
                 </div>
                 <footer class='card-footer'>
                     <a href='galerie.php?like=$image[image_id]' id='$image[image_id]' class='card-footer-item $liked'>
