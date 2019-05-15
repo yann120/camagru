@@ -5,3 +5,13 @@
 //     else
 //         document.getElementById($id).className = "card-footer-item has-background-link has-text-white";
 // }
+
+function activateModal($id) {
+    $modalid = "modal" + $id;
+    document.getElementById($modalid).className = "modal is-active";
+}
+
+function desactivateModal($id) {
+    $modalid = "modal" + $id;
+    document.getElementById($modalid).className = "modal";
+}

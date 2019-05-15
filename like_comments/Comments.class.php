@@ -29,10 +29,16 @@
                 $this->$attribut = $value;
             return;
         }
+        
+        function addComment($content, $image_id, $user_id)
+        {
+            $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES ('$content', '$user_id', '$image_id');";
+            $this->base->prepare($sql)->execute();
+        }
 
         function showComments($image_id)
         {
-            $sql = "SELECT * FROM comments, user WHERE image_id = '$image_id' AND user_id = user.id;";
+            $sql = "SELECT user.username as 'username', comment, creation_date FROM comments, user WHERE image_id = '$image_id' AND user_id = user.id;";
             $retour = ($this->base->query($sql));
             $comments = [];
             while($data = $retour->fetch())

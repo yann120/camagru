@@ -52,9 +52,43 @@ if ($_GET[like]  && $userdata)
                         </span>
                         Like
                     </a>
-                    <a href='#' class='card-footer-item'>Comment</a>
+                    <a class='card-footer-item' onclick='activateModal($image[image_id])'>Comment</a>
                 </footer>
             </div>";
+                echo   "<div class='modal' id ='modal$image[image_id]'>
+                        <div class='modal-background'></div>
+                        <div class='modal-card'>
+                            <header class='modal-card-head'>
+                            <p class='modal-card-title'>Comments</p>
+                            <button class='delete' aria-label='close' onclick='desactivateModal($image[image_id])'></button>
+                            </header>
+                            <section class='modal-card-body'>
+                            <iframe id='Comment'
+                            title='Comments'
+                            src='/comments.php?id={$image[image_id]}'>
+                        </iframe>
+                            </section>
+                            <footer class='modal-card-foot'>
+                            <form action='/comments.php' method='post'>
+                            <input type='hidden' name='image_id' value='$image[image_id]'>
+                                <div class='columns'>
+                                    <div class='column'>
+                                        <div class='control has-icons-left'>
+                                            <input class='input' type='text' placeholder='Comment' required name='content' >
+                                            <span class='icon is-small is-left'>
+                                            <i class='fas fa-comments'></i>
+                                        </div>
+                                    </div>
+                                    <div class='column is-one-fifth'>
+                                        <div class='control'>
+                                            <input type='submit' class='button is-success' name='submit' value='Poster'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            </footer>
+                        </div>
+                        </div>";
             }
         ?>
         </div>
