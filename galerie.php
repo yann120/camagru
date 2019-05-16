@@ -4,7 +4,10 @@ require_once 'montage/Images.class.php';
 require_once 'like_comments/Like.class.php';
 $image = new Images;
 $like = new Like;
-$allimages = $image->showAll();
+$page_number = 0;
+if ($_GET[page])
+    $page_number = $_GET[page];
+$allimages = $image->showAll($page_number);
 if ($_GET[action] === "logout")
 {
     if ($user->logout($_SESSION['session_id']))
@@ -14,6 +17,14 @@ if ($_GET[like]  && $userdata)
 {
     $image_id = intval($_GET[like]);
     $like->likeUnlike($userdata[id], $image_id);
+}
+function new_page($direction, $page)
+{
+    if ($page > 0 && $direction == 1)
+        $page = $page - 1;
+    else
+        $page = $page + 1;
+    echo $page;
 }
 
 ?>
@@ -88,9 +99,19 @@ if ($_GET[like]  && $userdata)
                             </form>
                             </footer>
                         </div>
-                        </div>";
+                        </div>
+                        ";
             }
         ?>
+        </div>
+        <br>
+        <div class="columns is-centered">
+        <nav class="column is-four-fifths" role="navigation" aria-label="pagination">
+            <div id="bottom_pagination">
+                <a class="pagination-previous" href="/galerie.php?page=<?php new_page(1, intval($page_number)) ?>">Previous</a>
+                <a class="pagination-next" href="/galerie.php?page=<?php new_page(0, intval($page_number)) ?>">Next page</a>
+            </div>
+        </nav>
         </div>
     </body>
 </html>

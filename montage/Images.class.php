@@ -68,9 +68,11 @@
             $this->base->prepare($sql)->execute();
         }
 
-        function showAll()
+        function showAll($page_number)
         {
-            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email, images.id AS image_id FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC";
+            $limit = 5;
+            $offset = $page_number * $limit;
+            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email, images.id AS image_id FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC LIMIT $limit OFFSET $offset";
             $retour = $this->base->query($sql);
             $allpictures = [];
             while ($data = $retour->fetch())

@@ -7,3 +7,9 @@
 .card{
 	height: max-content;
 }
+
+#bottom_pagination {
+	display: flex !important;
+	flex-direction: row !important;
+	justify-content: space-between !important;
+}
