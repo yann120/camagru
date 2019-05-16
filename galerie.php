@@ -81,7 +81,7 @@ if ($_GET[like]  && $userdata)
                                     </div>
                                     <div class='column is-one-fifth'>
                                         <div class='control'>
-                                            <input type='submit' class='button is-success' name='submit' value='Poster'>
+                                            <input type='submit' onclick='openComment($image[image_id])' class='button is-success' name='submit' value='Poster'>
                                         </div>
                                     </div>
                                 </div>

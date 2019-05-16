@@ -75,6 +75,10 @@
 
         function modif($newuser)
         {
+            if ($newuser[notification] == "on")
+                $notification = "TRUE";
+            else
+                $notification = "FALSE";
             if ($newuser['oldpassword'] && $newuser['newpassword'])
             {
                 $newuser['oldpassword'] = hash("whirlpool", $newuser['oldpassword']);
@@ -84,13 +88,13 @@
                 if ($data)
                 {
                     if ($data[password] === $newuser[oldpassword])
-                        $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', password = '$newuser[newpassword]' WHERE session_id = '$newuser[session_id]'";
-                        else
-                            return (false);
+                        $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', password = '$newuser[newpassword]', notification = $notification WHERE session_id = '$newuser[session_id]'";
+                    else
+                        return (false);
                 }
             }
             else
-                $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]' WHERE session_id = '$newuser[session_id]'";
+                $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', notification = $notification WHERE session_id = '$newuser[session_id]'";
             // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
             // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
             // if ($retour->fetch())

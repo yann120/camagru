@@ -29,11 +29,35 @@
                 $this->$attribut = $value;
             return;
         }
+        function send_mail($email, $subject, $message)
+        {
+            $message = wordwrap($message, 70, "\n");
+            $headers = 'From: camagru@42.fr' . "\r\n" .
+                    'Reply-To: camagru@42.fr' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+            mail($email, $subject, $message, $headers);
+        }
         
-        function addComment($content, $image_id, $user_id)
+        function commentNotification($image_id, $username_who_comment, $content)
+        {
+            $sql = "SELECT user.email as `email`, user.username as `username`, user.notification as `notification` 
+            FROM user 
+            INNER JOIN images 
+            WHERE images.user_id = user.id 
+            AND images.id = '$image_id'";
+            $retour = $this->base->query($sql);
+            $user = $retour->fetch();
+            echo "Ok";
+            $message = "Bonjour $user[username]!\nTu est populaire, $username_who_comment vient de commenter le montage numero $image_id.\n Son commentaire est :\n$content\n";
+            if ($user[notification])
+                $this->send_mail($user[email], "Nouveau commentaire de $username_who_comment sur Camagru!", $message);
+        }
+
+        function addComment($content, $image_id, $user_id, $username_who_comment)
         {
             $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES ('$content', '$user_id', '$image_id');";
             $this->base->prepare($sql)->execute();
+            $this->commentNotification($image_id, $username_who_comment, $content);
         }
 
         function showComments($image_id)
@@ -45,5 +69,6 @@
                 array_push($comments, $data);
             return ($comments);
         }
+
     }
 ?>
