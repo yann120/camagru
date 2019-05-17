@@ -62,10 +62,38 @@
             }
         }
         
+        private function numberOfImages()
+        {
+            $sql = "SELECT COUNT(*) as `nb_images` FROM `images`";
+            $retour = $this->base->query($sql);
+            $data = $retour->fetch();
+            return (intval($data[nb_images]));
+        }
+
         function storeImageToDB($path, $user_id)
         {
             $sql = "INSERT INTO images (user_id, path) VALUES ('$user_id','$path')";
             $this->base->prepare($sql)->execute();
+        }
+        private function maxPage()
+        {
+            $nb_images = $this->numberOfImages();
+            $limit = 5;
+            $max_page = $nb_images / $limit;
+            return (ceil($max_page));
+        }
+
+        function newPage($direction, $page)
+        {
+            $max_page = intval($this->maxPage());
+            if ($direction == 1)
+                $page = $page - 1;
+            else
+                $page = $page + 1;
+            if ($page < 0 || $page >= $max_page)
+                echo "disabled";
+            else
+                echo "href='/galerie.php?page=$page'";
         }
 
         function showAll($page_number)
