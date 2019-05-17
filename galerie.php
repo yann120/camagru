@@ -73,7 +73,7 @@ function new_page($direction, $page)
                             <p class='modal-card-title'>Comments</p>
                             <button class='delete' aria-label='close' onclick='desactivateModal($image[image_id])'></button>
                             </header>
-                            <section class='modal-card-body'>
+                            <section id='ModalBody' class='modal-card-body'>
                             <iframe id='Comment'
                             title='Comments'
                             src='/comments.php?id={$image[image_id]}'>

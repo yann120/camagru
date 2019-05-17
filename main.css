@@ -13,3 +13,11 @@
 	flex-direction: row !important;
 	justify-content: space-between !important;
 }
+
+#Comment {
+	width: 100%;
+}
+
+#ModalBody {
+	padding: 0;
+}
