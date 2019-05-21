@@ -7,7 +7,7 @@ if (!$_GET[id])
     header("Location: ./galerie.php");
 $image_id = intval($_GET[id]);
 $comments_class = new Comments;
-if ($_POST[submit] === "Poster")
+if ($_POST[submit] === "Poster" && $userdata)
 {
     $comments_class->addComment($_POST[content], $_POST[image_id], $userdata[id], $userdata[username]);
 }
