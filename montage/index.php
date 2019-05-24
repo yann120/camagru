@@ -15,7 +15,7 @@ if (!$userdata)
     <head>
         <meta charset="UTF-8">
         <title>Camagru</title>
-        <link rel="stylesheet" href="main.css">
+        <!-- <link rel="stylesheet" href="../main.css"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
         <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
@@ -24,7 +24,16 @@ if (!$userdata)
     <div class="container is-fluid">
         <h1 class="title is-1 has-text-centered">Montage</h1>
         <div class="columns">
-            <div class="column is-two-thirds has-background-primary"> Main </div>
+            <div class="column is-two-thirds has-background-primary">
+					<video id="webcam" autoplay="" width="500" height="auto"></video>
+					<!-- <div id="overlay">
+					</div> -->
+                <div class="buttons">
+					<button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
+				</div>
+                <canvas id="canvas"></canvas>
+                <img src="http://placekitten.com/g/320/261" id="photo" alt="photo">
+            </div>
             <div class="column has-background-link is-offset-1">side</div>
         </div>
     </div>
@@ -35,5 +44,6 @@ if (!$userdata)
         </p>
         </form>
     </body>
+        <script src="montage.js"></script>
 </html>
 
