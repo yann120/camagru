@@ -6,8 +6,10 @@
         canvas = document.querySelector('#canvas'),
         photo = document.querySelector('#photo'),
         startbutton = document.querySelector('#snap-btn'),
-        width = 320,
-        height = 0;
+        live_mask = document.querySelector('.live-mask'),
+        mask_selection = document.querySelectorAll('.mask-choice'),
+        width = 600,
+        height = 337.5;
 
     navigator.getMedia = (navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
@@ -47,4 +49,19 @@
         ev.preventDefault();
     }, false);
 
+    function changeMask(mask_id) {
+        console.log
+        live_mask.src = "../img/montage/" + mask_id + ".png";
+        live_mask.id = mask_id;
+    }
+
+    console.log(mask_selection);
+    mask_selection.forEach( function(mask){
+        mask.addEventListener('click', function () {
+        changeMask(mask.id);
+        })
+    })
+    // mask_selection.addEventListener('click', function () {
+    //     console.log("ok");
+    // })
 })();

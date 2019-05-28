@@ -1,0 +1,33 @@
+.mask-icon {
+    width: 100%;
+    text-align: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.video {
+    position: relative;
+    backface-visibility: hidden;
+    text-align: center;
+    z-index: 1;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+#webcam{
+    z-index: 2;
+}
+
+.live-mask {
+    /* z-index: 3;  */
+    /* float: left; */
+    margin-left: -600;
+    position: absolute;
+    /* text-align: center; */
+}
