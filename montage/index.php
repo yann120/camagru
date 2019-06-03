@@ -26,6 +26,13 @@ if (!$userdata)
         <h1 class="title is-1 has-text-centered">Montage</h1>
         <div class="columns">
             <div class="column is-two-thirds has-background-primary">
+                <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data"> -->
+                    <p>Images:
+                        <input type="file" name="picture" id="image_to_upload" accept="image/png, image/jpeg" />
+                        <!-- <input hidden type="image" name="picture" id="image_to_upload" /> -->
+                        <input type="submit" value="Upload" name="Upload" id="uploadButton" />
+                    </p>
+                <!-- </form> -->
                 <div class="video">
                     <video id="webcam" autoplay width="600" height="400"></video>
                     <img src="../img/montage/1.png" class="live-mask" id="1">
@@ -57,19 +64,20 @@ if (!$userdata)
                 <div class="buttons">
 					<button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
 				</div>
-                <canvas id="canvas"></canvas>
-                <!-- <img src="http://placekitten.com/g/320/261" id="photo" alt="photo"> -->
+                <canvas hidden id="canvas"></canvas>       
+                <img hidden id="photo" alt="photo">
+                <img  class="live-mask" id="1">     
             </div>
             <div class="column has-background-link is-offset-1">side</div>
         </div>
     </div>
-        <form action="" method="post" enctype="multipart/form-data">
-        <p>Images:
-        <input type="file" name="picture" />
-        <input type="submit" value="submit" name="submit" />
-        </p>
-        </form>
+        <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data">
+            <p>Images:
+            <input type="file" name="picture" id="image_to_upload" accept="image/png, image/jpeg" />
+            <input hidden type="image" name="picture" id="image_to_upload" />
+            <input type="submit" value="submit" name="submit" />
+            </p>
+        </form> -->
     </body>
         <script src="montage.js"></script>
 </html>
-

@@ -29,5 +29,12 @@
     /* float: left; */
     margin-left: -600;
     position: absolute;
+    z-index: 1;
     /* text-align: center; */
+}
+
+#photo {
+    width: 600px;
+    height: 337.5px;
+    z-index: 2;
 }

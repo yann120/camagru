@@ -36,7 +36,6 @@
         }
         function upload($user_id)
         {
-            echo "user id = ".$user_id;
             if ($_FILES['picture']['error'] > 0)
                 echo "Erreur de transfert";
             $valid_extensions = array('jpg', 'jpeg', 'png');

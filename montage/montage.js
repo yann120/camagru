@@ -6,8 +6,11 @@
         canvas = document.querySelector('#canvas'),
         photo = document.querySelector('#photo'),
         startbutton = document.querySelector('#snap-btn'),
-        live_mask = document.querySelector('.live-mask'),
+        live_mask = document.querySelectorAll('.live-mask'),
         mask_selection = document.querySelectorAll('.mask-choice'),
+        image_to_upload = document.querySelector('#image_to_upload'),
+        uploadButton = document.querySelector('#uploadButton'),
+        upload_form = document.upload_image,
         width = 600,
         height = 337.5;
 
@@ -42,26 +45,51 @@
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         const data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
+        image_to_upload.setAttribute('src', data);
+        console.log(data);
+        console.log("live mask id " + live_mask[0].id);
+        changeMask(live_mask[0].id);
+        // doesnt work yet
+        // upload_form.picture.src = data;
+        // upload_form.submit();
     }
 
     startbutton.addEventListener('click', function (ev) {
+
         takepicture();
+        photo.removeAttribute("hidden");
         ev.preventDefault();
     }, false);
 
     function changeMask(mask_id) {
-        console.log
-        live_mask.src = "../img/montage/" + mask_id + ".png";
-        live_mask.id = mask_id;
-    }
+        live_mask.forEach(function (mask) {
+        mask.src = "../img/montage/" + mask_id + ".png";
+        mask.id = mask_id;
+        });
+    };
 
-    console.log(mask_selection);
     mask_selection.forEach( function(mask){
         mask.addEventListener('click', function () {
         changeMask(mask.id);
         })
-    })
-    // mask_selection.addEventListener('click', function () {
-    //     console.log("ok");
-    // })
+    });
+
+    uploadButton.addEventListener('click', function (ev) {
+        // console.log(image_to_upload.files[0]);
+        if (uploadedFile = image_to_upload.files[0])
+        {
+            fileReader = new FileReader();
+            fileReader.onload = (fileLoadedEvent) => {
+                photo.src = fileLoadedEvent.target.result;
+                photo.removeAttribute("hidden");
+                changeMask(live_mask[0].id);
+            }
+            fileReader.readAsDataURL(uploadedFile);
+
+        }
+        else
+        {
+            alert("Erreur de fichier. Seul les images jpg, jpeg et PNG sont autorises")
+        }
+    }, false);
 })();
