@@ -34,22 +34,47 @@
         {
             $this->base = null;
         }
-        function upload($user_id)
+
+        private function montage($file, $mask_id)
         {
-            if ($_FILES['picture']['error'] > 0)
-                echo "Erreur de transfert";
-            $valid_extensions = array('jpg', 'jpeg', 'png');
-            $extension_upload = strtolower(  substr(  strrchr($_FILES['picture']['name'], '.')  ,1)  );
-            if (!in_array($extension_upload,$valid_extensions))
-                echo "Extension incorrecte. Seul les images jpg, jpeg et PNG sont autorises";
+            $picture = imagecreatefrompng($file);
+            $mask_file = "../img/montage/".$mask_id.".png";
+            $mask = imagecreatefrompng($mask_file);
+
+            $width_picture = imagesx($picture);
+            $height_picture = imagesy($picture);
+            $width_mask = imagesx($mask);
+            $height_mask = imagesy($mask);
+
+            $destination_x = $width_mask - $width_picture;
+            // echo "destination_x".$destination_x." ";
+            $destination_y = $height_mask - $height_picture;
+            // echo "destination_y".$destination_y;
+
+            // imagecopy($picture, $mask, 0, 0, 0, 0, $width_picture, $height_picture);
+            imagecopy($picture, $mask, $destination_x, $destination_y, 0, 0, $width_picture, $height_picture);
+            return($picture);
+
+        }
+
+        function upload($user_id, $mask_id, $picture)
+        {
+            $folderPath = "../public/tmp/".$user_id."/";
+            mkdir($folderPath, 0777, true);
+            $filename = "tmppicture";
+            $image_parts = explode(";base64,", $picture);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $file = $folderPath.$filename.".png";
+            file_put_contents($file, $image_base64);
+            $picture = $this->montage($file, $mask_id);
+            // TODO: delete temp picture
+            $folderPath = "../public/".$user_id."/";
+            mkdir($folderPath, 0777, true);
             $filename = uniqid();
-            $directory = "../public/";
-            mkdir($directory.$user_id, 0777, true);
-            $file = "/public/".$user_id."/".$filename.".".$extension_upload;
-            echo $file."\n";
-            $resultat = move_uploaded_file($_FILES['picture']['tmp_name'], "..".$file);
-            echo $_FILES['picture']['tmp_name']."\n";
-            if ($resultat)
+            $file = $folderPath.$filename.".jpg";
+            if (imagejpeg($picture, $file))
             {
                 echo "Transfert réussi";
                 $this->storeImageToDB($file, $user_id);
@@ -59,6 +84,32 @@
                 echo "Echec du transfert";
                 return (false);
             }
+
+
+
+            // if ($_FILES['picture']['error'] > 0)
+            //     echo "Erreur de transfert";
+            // $valid_extensions = array('jpg', 'jpeg', 'png');
+            // $extension_upload = strtolower(  substr(  strrchr($_FILES['picture']['name'], '.')  ,1)  );
+            // if (!in_array($extension_upload,$valid_extensions))
+            //     echo "Extension incorrecte. Seul les images jpg, jpeg et PNG sont autorises";
+            // $filename = uniqid();
+            // $directory = "../public/";
+            // mkdir($directory.$user_id, 0777, true);
+            // $file = "/public/".$user_id."/".$filename.".".$extension_upload;
+            // echo $file."\n";
+            // $resultat = move_uploaded_file($_FILES['picture']['tmp_name'], "..".$file);
+            // echo $_FILES['picture']['tmp_name']."\n";
+            // if ($resultat)
+            // {
+            //     echo "Transfert réussi";
+            //     $this->storeImageToDB($file, $user_id);
+            // }
+            // else
+            // {
+            //     echo "Echec du transfert";
+            //     return (false);
+            // }
         }
         
         private function numberOfImages()

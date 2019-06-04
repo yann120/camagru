@@ -6,8 +6,9 @@ require_once 'Images.class.php';
 if (!$userdata)
 	header("Location: ../user/login.php?message=notloggedin");
     $image = new Images;
-    if ($_POST['submit'])
-        $image->upload($userdata[id]);
+    // print_r($_POST);
+    if ($_POST['Post'] === 'Post_Picture')
+        $image->upload($userdata[id], $_POST[mask], $_POST[picture]);
 ?>
 
 <!DOCTYPE html>
@@ -64,20 +65,26 @@ if (!$userdata)
                 <div class="buttons">
 					<button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
 				</div>
-                <canvas hidden id="canvas"></canvas>       
-                <img hidden id="photo" alt="photo">
-                <img  class="live-mask" id="1">     
+                <div class="output">
+                    <canvas hidden id="canvas"></canvas>       
+                    <img hidden id="photo" alt="photo">
+                    <img hidden class="live-mask" id="1"> 
+                </div>
+                <form action="" name="upload_image" method="post" enctype="multipart/form-data">
+                <input hidden type="hidden" name="picture" id="image_to_post" />
+                <input hidden type="text" name="mask" id="maskChoice" value="1" />
+                <div class="buttons">
+                    <!-- <input type="submit" id="postButton" class="fas fa-3x fa-upload" name="upload" /> -->
+                    <button type="submit" id="postButton" hidden name="Post" value="Post_Picture">
+                        Post
+                    </button>
+				</div>
+                </form>
             </div>
             <div class="column has-background-link is-offset-1">side</div>
         </div>
     </div>
-        <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data">
-            <p>Images:
-            <input type="file" name="picture" id="image_to_upload" accept="image/png, image/jpeg" />
-            <input hidden type="image" name="picture" id="image_to_upload" />
-            <input type="submit" value="submit" name="submit" />
-            </p>
-        </form> -->
+        
     </body>
         <script src="montage.js"></script>
 </html>

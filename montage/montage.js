@@ -8,8 +8,11 @@
         startbutton = document.querySelector('#snap-btn'),
         live_mask = document.querySelectorAll('.live-mask'),
         mask_selection = document.querySelectorAll('.mask-choice'),
+        final_mask = document.querySelector('#maskChoice'),
         image_to_upload = document.querySelector('#image_to_upload'),
+        image_to_post= document.querySelector('#image_to_post'),
         uploadButton = document.querySelector('#uploadButton'),
+        postButton = document.querySelector('#postButton'),
         upload_form = document.upload_image,
         width = 600,
         height = 337.5;
@@ -45,13 +48,13 @@
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         const data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
-        image_to_upload.setAttribute('src', data);
+        document.upload_image.picture.value = data;
+        live_mask[1].removeAttribute("hidden");
+        live_mask[1].removeAttribute("hidden");
+        postButton.removeAttribute("hidden");
+
         console.log(data);
-        console.log("live mask id " + live_mask[0].id);
         changeMask(live_mask[0].id);
-        // doesnt work yet
-        // upload_form.picture.src = data;
-        // upload_form.submit();
     }
 
     startbutton.addEventListener('click', function (ev) {
@@ -65,6 +68,7 @@
         live_mask.forEach(function (mask) {
         mask.src = "../img/montage/" + mask_id + ".png";
         mask.id = mask_id;
+        final_mask.value = mask_id;
         });
     };
 
@@ -81,7 +85,12 @@
             fileReader = new FileReader();
             fileReader.onload = (fileLoadedEvent) => {
                 photo.src = fileLoadedEvent.target.result;
+                document.upload_image.picture.value = fileLoadedEvent.target.result;
+                console.log(fileLoadedEvent.target.result);
+                // image_to_post.src = ;
                 photo.removeAttribute("hidden");
+                live_mask[1].removeAttribute("hidden");
+                postButton.removeAttribute("hidden");
                 changeMask(live_mask[0].id);
             }
             fileReader.readAsDataURL(uploadedFile);
@@ -93,3 +102,6 @@
         }
     }, false);
 })();
+
+// upload_form.picture.src = data;
+// upload_form.submit();
