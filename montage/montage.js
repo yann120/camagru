@@ -39,7 +39,9 @@
             video.setAttribute('height', height);
             canvas.setAttribute('width', width);
             canvas.setAttribute('height', height);
+            videodiv.removeAttribute("hidden");
             streaming = true;
+
         }
     }, false);
 

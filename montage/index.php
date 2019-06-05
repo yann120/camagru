@@ -34,16 +34,14 @@ if (!$userdata)
                         <input type="submit" value="Upload" name="Upload" id="uploadButton" />
                     </p>
                 <!-- </form> -->
-                <div id="video">
+                <div id="video" hidden>
                     <video id="webcam" autoplay width="600" height="400"></video>
                     <img src="../img/montage/1.png" class="live-mask" id="1">
+                    <div class="buttons">
+					    <button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
+				    </div>
                 </div>
-					<!-- <div id="overlay">
-					</div> -->
-
-                <div class="buttons">
-					<button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
-				</div>
+      
                 <div class="control flex-row" id="mask-bar">
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="1" checked hidden>
