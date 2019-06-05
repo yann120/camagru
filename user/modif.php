@@ -26,30 +26,18 @@ if ($userdata)
 				<div class="field">
 				<label class="label">Username</label>
 				<div class="control has-icons-left has-icons-right">
-					<input class="input is-success" type="text" required name="username" value=<?php echo "'$userdata[username]'" ?> placeholder="Username">
+					<input class="input" type="text" required name="username" value=<?php echo "'$userdata[username]'" ?> placeholder="Username">
 					<span class="icon is-small is-left">
 					<i class="fas fa-user"></i>
 					</span>
-					<span class="icon is-small is-right">
-					<i class="fas fa-check"></i>
-					</span>
-				</div>
-				<p class="help is-success">This username is available</p>
-				</div>
 
 				<div class="field">
 				<label class="label">Email</label>
 				<div class="control has-icons-left has-icons-right">
-					<input class="input is-danger" type="email" required name="email" value=<?php echo "'$userdata[email]'" ?> placeholder="Email">
+					<input class="input" type="email" required name="email" value=<?php echo "'$userdata[email]'" ?> placeholder="Email">
 					<span class="icon is-small is-left">
 					<i class="fas fa-envelope"></i>
 					</span>
-					<span class="icon is-small is-right">
-					<i class="fas fa-exclamation-triangle"></i>
-					</span>
-				</div>
-				<p class="help is-danger">This email is invalid</p>
-				</div>
 
 				<div class="field">
 				<label class="label">Old password</label>
@@ -80,7 +68,7 @@ if ($userdata)
 				<input type="submit" class="button is-success" name="submit" value="OK">
 				</div>
 				<div class="control">
-					<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
+					<button class="button is-primary" onclick="location.href='/index.php'">Annuler</button>
 				</div>
 				<div class="control">
 					<a class="button is-danger" href = "/user/modif.php?action=delete" onclick="return confirm('Êtes-vous sur de supprimer votre compte ?')">Supprimer mon compte</a>
