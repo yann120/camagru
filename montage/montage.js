@@ -72,6 +72,8 @@
         mask.src = "../img/montage/" + mask_id + ".png";
         mask.id = mask_id;
         final_mask.value = mask_id;
+        startbutton.removeAttribute("disabled");
+        live_mask[0].removeAttribute("hidden");
         });
     };
 

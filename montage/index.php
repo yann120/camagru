@@ -36,9 +36,9 @@ if (!$userdata)
                 <!-- </form> -->
                 <div id="video" hidden>
                     <video id="webcam" autoplay width="600" height="400"></video>
-                    <img src="../img/montage/1.png" class="live-mask" id="1">
+                    <img src="../img/montage/1.png" class="live-mask" id="1" hidden>
                     <div class="buttons">
-					    <button id="snap-btn"><span class="fas fa-3x fa-camera"></span></button>
+					    <button id="snap-btn" disabled><span class="fas fa-3x fa-camera"></span></button>
 				    </div>
                 </div>
       
