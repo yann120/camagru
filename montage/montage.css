@@ -51,3 +51,30 @@
 .buttons, #mask-bar {
     margin: 1rem;
 }
+
+.shotImages {
+    margin: 0.2rem;
+}
+
+.singleImage {
+    position: relative;
+}
+
+.singleImage:hover > img {
+    opacity: 0.4;
+}
+
+.singleImage:hover > .deleteButton {
+    opacity: 1;
+}
+.deleteButton {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    opacity: 0;
+}
+
+#side-bar {
+    height: 600px;
+    overflow-y: auto;
+}

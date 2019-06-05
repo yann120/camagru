@@ -166,5 +166,15 @@
             // print_r($allpictures);
             return ($allpictures);
         }
+
+        function showByUserId($user_id)
+        {
+            $sql = "SELECT images.path AS path, images.id AS image_id FROM images WHERE images.user_id = '$user_id' ORDER BY images.creation_date DESC";
+            $retour = $this->base->query($sql);
+            $allpictures = [];
+            while ($data = $retour->fetch())
+                array_push($allpictures, $data);
+            return ($allpictures);
+        }
     }
 ?>

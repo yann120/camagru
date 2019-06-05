@@ -6,10 +6,11 @@ require_once 'Images.class.php';
 if (!$userdata)
 	header("Location: ../user/login.php?message=notloggedin");
     $image = new Images;
-    // print_r($_POST);
+    // print_r($userdata);
     if ($_POST['Post'] === 'Post_Picture')
         $image->upload($userdata[id], $_POST[mask], $_POST[picture]);
-?>
+    $allImagesFromCurrentUser = $image->showByUserId($userdata[id]);
+?>  
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -76,13 +77,21 @@ if (!$userdata)
                 <input hidden type="text" name="mask" id="maskChoice" value="1" />
                 <div class="buttons">
                     <!-- <input type="submit" id="postButton" class="fas fa-3x fa-upload" name="upload" /> -->
-                    <button type="submit" id="postButton" hidden name="Post" value="Post_Picture">
-                        Post
-                    </button>
+                    <button type="submit" id="postButton" hidden name="Post" value="Post_Picture">Post</button>
 				</div>
                 </form>
             </div>
-            <div class="column has-background-link is-offset-1">side</div>
+            <div class="column has-background-link is-offset-1" id="side-bar">
+                <?php
+                    foreach ($allImagesFromCurrentUser as $image) 
+                    {
+                        echo "<div class='singleImage'>";
+                            echo "<img src='$image[path]' class='shotImages' >";
+                            echo "<button class='button is-danger deleteButton'>Delete</button>";
+                        echo "</div>";
+                    }
+                ?>
+            </div>
         </div>
     </div>
         
