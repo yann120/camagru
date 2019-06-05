@@ -8,7 +8,7 @@
     flex-direction: row;
 }
 
-.video {
+#video {
     position: relative;
     backface-visibility: hidden;
     text-align: center;
@@ -43,6 +43,6 @@
     text-align: center;
 }
 
-#postButton {
+.buttons, #mask-bar {
     margin: 1rem;
 }

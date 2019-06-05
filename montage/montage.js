@@ -2,6 +2,7 @@
 
     var streaming = false,
         video = document.querySelector('#webcam'),
+        videodiv = document.querySelector('#video'),
         cover = document.querySelector('#cover'),
         canvas = document.querySelector('#canvas'),
         photo = document.querySelector('#photo'),
@@ -89,6 +90,8 @@
                 console.log(fileLoadedEvent.target.result);
                 // image_to_post.src = ;
                 photo.removeAttribute("hidden");
+                videodiv.remove();
+                startbutton.remove();
                 live_mask[1].removeAttribute("hidden");
                 postButton.removeAttribute("hidden");
                 changeMask(live_mask[0].id);
