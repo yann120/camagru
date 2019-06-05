@@ -15,6 +15,11 @@
     z-index: 1;
 }
 
+#upload_field {
+    text-align: center; 
+    margin: 1rem;
+}
+
 .buttons {
     display: flex;
     justify-content: center;

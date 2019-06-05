@@ -28,11 +28,13 @@ if (!$userdata)
         <div class="columns">
             <div class="column is-two-thirds has-background-primary">
                 <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data"> -->
-                    <p>Images:
+                <div id="upload_field">
+                    <p>Importer une image:
                         <input type="file" name="picture" id="image_to_upload" accept="image/png, image/jpeg" />
                         <!-- <input hidden type="image" name="picture" id="image_to_upload" /> -->
                         <input type="submit" value="Upload" name="Upload" id="uploadButton" />
                     </p>
+                </div>
                 <!-- </form> -->
                 <div id="video" hidden>
                     <video id="webcam" autoplay width="600" height="400"></video>
