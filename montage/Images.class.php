@@ -46,14 +46,23 @@
             $width_mask = imagesx($mask);
             $height_mask = imagesy($mask);
 
-            $destination_x = $width_mask - $width_picture;
-            // echo "destination_x".$destination_x." ";
-            $destination_y = $height_mask - $height_picture;
-            // echo "destination_y".$destination_y;
+            echo "width_picture".$width_picture." ";
+            echo "height_picture".$height_picture." ";
+            echo "width_mask".$width_mask." ";
+            echo "height_mask".$height_mask." ";
 
-            // imagecopy($picture, $mask, 0, 0, 0, 0, $width_picture, $height_picture);
-            imagecopy($picture, $mask, $destination_x, $destination_y, 0, 0, $width_picture, $height_picture);
-            return($picture);
+            $destination_x = $width_mask - $width_picture;
+            echo "destination_x".$destination_x." ";
+            $destination_y = $height_mask - $height_picture;
+            echo "destination_y".$destination_y;
+            $pictureresized = imagecreatetruecolor($width_mask, $height_mask);
+            imagecopyresized($pictureresized, $picture, 0, 0, 0, 0, $width_mask, $height_mask, $width_picture, $height_picture);
+            imagecopy($pictureresized, $mask, 0, 0, 0, 0, $width_picture, $height_picture);
+            // imagecopy($mask, $picture, 0, 0, 0, 0, 600, 337.5);
+            // voir imagecopyresize
+            // imagecopyresized($picture, $mask, 0, 0, 0, 0, $width_mask, $height_mask, $width_picture, $height_picture);
+            // imagecopy($picture, $mask, $destination_x, $destination_y, 0, 0, $width_picture, $height_picture);
+            return($pictureresized);
 
         }
 

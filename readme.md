@@ -1,3 +1,3 @@
 ### a faire
 * Suppression des commentaires ?
-* Resize image
+* Faire fonctionner avec upload JPG
