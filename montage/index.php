@@ -10,8 +10,9 @@ if (!$userdata)
     if ($_POST['Post'] === 'Post_Picture')
         $image->upload($userdata[id], $_POST[mask], $_POST[picture]);
     $allImagesFromCurrentUser = $image->showByUserId($userdata[id]);
+    if ($_GET[action] === "delete" && $_GET[image_id])
+        $image->delete($userdata[id], $_GET[image_id]);
 ?>  
-
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -25,6 +26,10 @@ if (!$userdata)
     </head>
     <body>
     <div class="container is-fluid">
+        <?php
+        if ($_GET[message] === "deleted")
+            echo "Image supprimée!";
+        ?>
         <h1 class="title is-1 has-text-centered">Montage</h1>
         <div class="columns">
             <div class="column is-two-thirds has-background-primary">
@@ -87,7 +92,7 @@ if (!$userdata)
                     {
                         echo "<div class='singleImage'>";
                             echo "<img src='$image[path]' class='shotImages' >";
-                            echo "<button class='button is-danger deleteButton'>Delete</button>";
+                            echo "<a href='/montage?action=delete&image_id=$image[image_id]' class='button is-danger deleteButton'>Delete</a>";
                         echo "</div>";
                     }
                 ?>

@@ -176,5 +176,26 @@
                 array_push($allpictures, $data);
             return ($allpictures);
         }
+
+        function delete($user_id, $image_id)
+        {
+            $sql = "SELECT user_id, path FROM `images` WHERE id = '$image_id'";
+            $retour = $this->base->query($sql);
+            $data = $retour->fetch();
+            if ($data[user_id] === $user_id)
+            {   
+                $sql = "DELETE FROM images WHERE id = '$image_id'";
+                if ($this->base->prepare($sql)->execute())
+                    if (file_exists($data[path])) 
+                    {
+                        if (unlink($data[path]))
+                            header("Location: /montage?message=deleted");
+                        else
+                            echo "Pas supprimé le fichier physique";
+                    }
+                else 
+                    echo "pas supprimé";
+            }
+        }
     }
 ?>
