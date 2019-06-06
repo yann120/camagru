@@ -47,6 +47,7 @@ if ($_GET[like]  && $userdata)
                             <p class='title is-4'>$image[username]</p>
                             <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
                             <time datetime='$image[creation_date]'>$image[creation_date]</time>
+                            <iframe class='share-btn' src='https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Flocalhost%3A8080%2Fpublic%2F1%2F5cf8d45cb1b3f.jpg&layout=button&size=small&width=73&height=20&appId' width='73' height='20' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'></iframe>
                 </div>
                 <footer class='card-footer'>
                     <a href='galerie.php?like=$image[image_id]' id='$image[image_id]' class='card-footer-item $liked'>
