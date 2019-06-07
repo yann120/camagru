@@ -42,7 +42,7 @@
             else if (exif_imagetype($file) == IMAGETYPE_JPEG)
                 $picture = imagecreatefromjpeg($file);
             else
-                exit("Wrong format of image");
+                return (NULL);
             $mask_file = "../img/montage/".$mask_id.".png";
             $mask = imagecreatefrompng($mask_file);
 
@@ -77,7 +77,12 @@
             $file = $folderPath.$filename.".png";
             file_put_contents($file, $image_base64);
             $picture = $this->montage($file, $mask_id);
-            // TODO: delete temp picture
+            if (!$picture)
+            {
+                echo "Wrong format";
+                return ;
+            }
+            unlink($file);
             $folderPath = "../public/".$user_id."/";
             mkdir($folderPath, 0777, true);
             $filename = uniqid();
