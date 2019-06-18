@@ -1,5 +1,4 @@
 (function () {
-
   var streaming = false,
       video = document.querySelector('#webcam'),
       videodiv = document.querySelector('#video'),

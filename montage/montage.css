@@ -1,0 +1,80 @@
+.mask-icon {
+    width: 100%;
+    text-align: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+#video {
+    position: relative;
+    backface-visibility: hidden;
+    text-align: center;
+    z-index: 1;
+}
+
+#upload_field {
+    text-align: center; 
+    margin: 1rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+#webcam{
+    z-index: 2;
+}
+
+.live-mask {
+    /* z-index: 3;  */
+    /* float: left; */
+    margin-left: -600;
+    position: absolute;
+    z-index: 1;
+    /* text-align: center; */
+}
+
+#photo {
+    width: 600px;
+    height: 337.5px;
+    z-index: 2;
+}
+
+.output {
+    text-align: center;
+}
+
+.buttons, #mask-bar {
+    margin: 1rem;
+}
+
+.shotImages {
+    margin: 0.2rem;
+}
+
+.singleImage {
+    position: relative;
+}
+
+.singleImage:hover > img {
+    opacity: 0.4;
+}
+
+.singleImage:hover > .deleteButton {
+    opacity: 1;
+}
+.deleteButton {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    opacity: 0;
+}
+
+#side-bar {
+    height: 600px;
+    overflow-y: auto;
+}

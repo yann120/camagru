@@ -34,23 +34,55 @@
         {
             $this->base = null;
         }
-        function upload($user_id)
+
+        private function montage($file, $mask_id)
         {
-            echo "user id = ".$user_id;
-            if ($_FILES['picture']['error'] > 0)
-                echo "Erreur de transfert";
-            $valid_extensions = array('jpg', 'jpeg', 'png');
-            $extension_upload = strtolower(  substr(  strrchr($_FILES['picture']['name'], '.')  ,1)  );
-            if (!in_array($extension_upload,$valid_extensions))
-                echo "Extension incorrecte. Seul les images jpg, jpeg et PNG sont autorises";
+            if (exif_imagetype($file) == IMAGETYPE_PNG)
+                $picture = imagecreatefrompng($file);
+            else if (exif_imagetype($file) == IMAGETYPE_JPEG)
+                $picture = imagecreatefromjpeg($file);
+            else
+                exit("Wrong format of image");
+            $mask_file = "../img/montage/".$mask_id.".png";
+            $mask = imagecreatefrompng($mask_file);
+
+            $width_picture = imagesx($picture);
+            $height_picture = imagesy($picture);
+            $width_mask = imagesx($mask);
+            $height_mask = imagesy($mask);
+
+            // echo "width_picture".$width_picture." ";
+            // echo "height_picture".$height_picture." ";
+            // echo "width_mask".$width_mask." ";
+            // echo "height_mask".$height_mask." ";
+
+            $pictureresized = imagecreatetruecolor($width_mask, $height_mask);
+            imagecopyresized($pictureresized, $picture, 0, 0, 0, 0, $width_mask, $height_mask, $width_picture, $height_picture);
+            $width_pictureresized = imagesx($pictureresized);
+            $height_pictureresized = imagesy($pictureresized);
+            imagecopy($pictureresized, $mask, 0, 0, 0, 0, $width_pictureresized, $height_pictureresized);
+            return($pictureresized);
+
+        }
+
+        function upload($user_id, $mask_id, $picture)
+        {
+            $folderPath = "../public/tmp/".$user_id."/";
+            mkdir($folderPath, 0777, true);
+            $filename = "tmppicture";
+            $image_parts = explode(";base64,", $picture);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $file = $folderPath.$filename.".png";
+            file_put_contents($file, $image_base64);
+            $picture = $this->montage($file, $mask_id);
+            // TODO: delete temp picture
+            $folderPath = "../public/".$user_id."/";
+            mkdir($folderPath, 0777, true);
             $filename = uniqid();
-            $directory = "../public/";
-            mkdir($directory.$user_id, 0777, true);
-            $file = "/public/".$user_id."/".$filename.".".$extension_upload;
-            echo $file."\n";
-            $resultat = move_uploaded_file($_FILES['picture']['tmp_name'], "..".$file);
-            echo $_FILES['picture']['tmp_name']."\n";
-            if ($resultat)
+            $file = $folderPath.$filename.".jpg";
+            if (imagejpeg($picture, $file))
             {
                 echo "Transfert réussi";
                 $this->storeImageToDB($file, $user_id);
@@ -60,6 +92,32 @@
                 echo "Echec du transfert";
                 return (false);
             }
+
+
+
+            // if ($_FILES['picture']['error'] > 0)
+            //     echo "Erreur de transfert";
+            // $valid_extensions = array('jpg', 'jpeg', 'png');
+            // $extension_upload = strtolower(  substr(  strrchr($_FILES['picture']['name'], '.')  ,1)  );
+            // if (!in_array($extension_upload,$valid_extensions))
+            //     echo "Extension incorrecte. Seul les images jpg, jpeg et PNG sont autorises";
+            // $filename = uniqid();
+            // $directory = "../public/";
+            // mkdir($directory.$user_id, 0777, true);
+            // $file = "/public/".$user_id."/".$filename.".".$extension_upload;
+            // echo $file."\n";
+            // $resultat = move_uploaded_file($_FILES['picture']['tmp_name'], "..".$file);
+            // echo $_FILES['picture']['tmp_name']."\n";
+            // if ($resultat)
+            // {
+            //     echo "Transfert réussi";
+            //     $this->storeImageToDB($file, $user_id);
+            // }
+            // else
+            // {
+            //     echo "Echec du transfert";
+            //     return (false);
+            // }
         }
         
         private function numberOfImages()
@@ -107,6 +165,37 @@
                 array_push($allpictures, $data);
             // print_r($allpictures);
             return ($allpictures);
+        }
+
+        function showByUserId($user_id)
+        {
+            $sql = "SELECT images.path AS path, images.id AS image_id FROM images WHERE images.user_id = '$user_id' ORDER BY images.creation_date DESC";
+            $retour = $this->base->query($sql);
+            $allpictures = [];
+            while ($data = $retour->fetch())
+                array_push($allpictures, $data);
+            return ($allpictures);
+        }
+
+        function delete($user_id, $image_id)
+        {
+            $sql = "SELECT user_id, path FROM `images` WHERE id = '$image_id'";
+            $retour = $this->base->query($sql);
+            $data = $retour->fetch();
+            if ($data[user_id] === $user_id)
+            {   
+                $sql = "DELETE FROM images WHERE id = '$image_id'";
+                if ($this->base->prepare($sql)->execute())
+                    if (file_exists($data[path])) 
+                    {
+                        if (unlink($data[path]))
+                            header("Location: /montage?message=deleted");
+                        else
+                            echo "Pas supprimé le fichier physique";
+                    }
+                else 
+                    echo "pas supprimé";
+            }
         }
     }
 ?>
