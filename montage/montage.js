@@ -15,7 +15,7 @@
       postButton = document.querySelector('#postButton'),
       upload_form = document.upload_image,
       width = 600,
-      height = 337.5;
+      height = 450;
 
   navigator.getMedia = (navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
