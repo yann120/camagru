@@ -6,8 +6,10 @@
         function __construct()
         {
             session_start();
+            if (!include 'config/database.php')
+                include '../config/database.php';
             try {
-                $this->base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
+                $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
