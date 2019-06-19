@@ -28,8 +28,11 @@
         <h1 class="title is-1 has-text-centered">Home</h1>
         <?php
             if ($userdata)
+            {
+                $userdata[username] = strip_tags($userdata[username]);
                 echo "<h3 class='title is-3 has-text-centered'>Bonjour $userdata[username]</h3>";
-            if ($message)
+            }
+                if ($message)
                 echo "<h3 class='title is-3 has-text-centered'>$message</h3>";
         ?>
     </body>

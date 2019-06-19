@@ -18,6 +18,8 @@ $comments = $comments_class->showComments($image_id);
         <table>
         <?php
         foreach($comments as $comment) {
+            $comment[username] = strip_tags($comment[username]);
+            $comment[comment] = strip_tags($comment[comment]);
             echo "<tr>";
             echo "<td><b>{$comment[username]}:</b> {$comment[comment]}<br></td>";
             echo "</tr>";
