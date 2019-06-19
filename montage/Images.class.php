@@ -9,13 +9,11 @@
             if (!include 'config/database.php')
                 include '../config/database.php';
             try {
-                $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);                
+                $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
-              }
-              $this->base->exec("SET CHARACTER SET utf8");
-              
+            }
         }
 
         function __get($attribut)
@@ -125,15 +123,16 @@
         private function numberOfImages()
         {
             $sql = "SELECT COUNT(*) as `nb_images` FROM `images`";
-            $retour = $this->base->query($sql);
+            $retour = $this->base->prepare($sql);
+            $retour->execute();
             $data = $retour->fetch();
             return (intval($data[nb_images]));
         }
 
         function storeImageToDB($path, $user_id)
         {
-            $sql = "INSERT INTO images (user_id, path) VALUES ('$user_id','$path')";
-            $this->base->prepare($sql)->execute();
+            $sql = "INSERT INTO images (user_id, path) VALUES (?,?)";
+            $this->base->prepare($sql)->execute(array($user_id, $path));
         }
         private function maxPage()
         {
@@ -160,7 +159,7 @@
         {
             $limit = 5;
             $offset = $page_number * $limit;
-            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email, images.id AS image_id FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC LIMIT $limit OFFSET $offset";
+            $sql = "SELECT images.user_id, images.path, images.creation_date, user.username, user.email, images.id AS image_id FROM images, user WHERE images.user_id = user.id ORDER BY images.creation_date DESC LIMIT 5 OFFSET $offset";
             $retour = $this->base->query($sql);
             $allpictures = [];
             while ($data = $retour->fetch())
@@ -171,8 +170,9 @@
 
         function showByUserId($user_id)
         {
-            $sql = "SELECT images.path AS path, images.id AS image_id FROM images WHERE images.user_id = '$user_id' ORDER BY images.creation_date DESC";
-            $retour = $this->base->query($sql);
+            $sql = "SELECT images.path AS path, images.id AS image_id FROM images WHERE images.user_id = ? ORDER BY images.creation_date DESC";
+            $retour = $this->base->prepare($sql);
+            $retour->execute(array($user_id));
             $allpictures = [];
             while ($data = $retour->fetch())
                 array_push($allpictures, $data);
@@ -181,13 +181,14 @@
 
         function delete($user_id, $image_id)
         {
-            $sql = "SELECT user_id, path FROM `images` WHERE id = '$image_id'";
-            $retour = $this->base->query($sql);
+            $sql = "SELECT user_id, path FROM `images` WHERE id = ?";
+            $retour = $this->base->prepare($sql);
+            $retour->execute(array($image_id));
             $data = $retour->fetch();
             if ($data[user_id] === $user_id)
             {   
-                $sql = "DELETE FROM images WHERE id = '$image_id'";
-                if ($this->base->prepare($sql)->execute())
+                $sql = "DELETE FROM images WHERE id = ?";
+                if ($this->base->prepare($sql)->execute(array($image_id)))
                     if (file_exists($data[path])) 
                     {
                         if (unlink($data[path]))
