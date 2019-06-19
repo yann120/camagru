@@ -46,8 +46,9 @@
             FROM user 
             INNER JOIN images 
             WHERE images.user_id = user.id 
-            AND images.id = '$image_id'";
-            $retour = $this->base->query($sql);
+            AND images.id = ?";
+            $retour = $this->base->prepare($sql);
+            $retour->execute(array($image_id));
             $user = $retour->fetch();
             echo "Ok";
             $message = "Bonjour $user[username]!\nTu est populaire, $username_who_comment vient de commenter le montage numero $image_id.\n Son commentaire est :\n$content\n";
@@ -57,15 +58,16 @@
 
         function addComment($content, $image_id, $user_id, $username_who_comment)
         {
-            $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES ('$content', '$user_id', '$image_id');";
-            $this->base->prepare($sql)->execute();
+            $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES (?, ?, ?);";
+            $this->base->prepare($sql)->execute(array($content, $user_id, $image_id));
             $this->commentNotification($image_id, $username_who_comment, $content);
         }
 
         function showComments($image_id)
         {
-            $sql = "SELECT user.username as 'username', comment, creation_date FROM comments, user WHERE image_id = '$image_id' AND user_id = user.id;";
-            $retour = ($this->base->query($sql));
+            $sql = "SELECT user.username as 'username', comment, creation_date FROM comments, user WHERE image_id = ? AND user_id = user.id;";
+            $retour = ($this->base->prepare($sql));
+            $retour->execute(array($image_id));
             $comments = [];
             while($data = $retour->fetch())
                 array_push($comments, $data);
