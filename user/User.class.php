@@ -13,8 +13,6 @@
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
               }
-            //   $this->base->exec("SET CHARACTER SET utf8");
-              
         }
 
         function __get($attribut)
@@ -36,25 +34,17 @@
             $this->base = null;
         }
 
-        function displayUser($session_id)
-        {
-            $retour = $this->base->query("SELECT * FROM user WHERE session_id = '$session_id'");
-            while ($data = $retour->fetch()){
-                echo $data['username'].' '.$data['email'].' '.$data['password']."<br>";
-              }
-        }
-
         function create($newuser)
         {
             $newuser[2] = hash("whirlpool", $newuser[2]);
             $newuser[3] = uniqid();
-            $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser[0]' OR email = '$newuser[1]'");
+            $retour = $this->base->prepare("SELECT * FROM user WHERE username = ? OR email = ?");
+            $retour->execute(array($newuser[0], $newuser[1]));
             if ($retour->fetch())
                 return (false);
             $sql = "INSERT INTO user (username, email, password, user_verification) VALUES (?,?,?,?)";
             $this->base->prepare($sql)->execute($newuser);
             send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n Merci pour ton inscription sur Camagru.\n Pour valider ton compte, merci de cliquer sur ce lien : \n http://localhost:8080/index.php?user_verification=$newuser[3] \n A bientôt!\n");
-            // send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n ");
             return (true);
         }
 
@@ -62,60 +52,67 @@
         {
             if ($verification_id)
             {
-                $retour = $this->base->query("SELECT * FROM user WHERE user_verification = '$verification_id'");
+                $retour = $this->base->prepare("SELECT * FROM user WHERE user_verification = ?");
+                $retour->execute(array($verification_id));
                 if (!$retour->fetch())
                     return (false);
-                $sql = "UPDATE user SET user_verification = NULL WHERE user_verification = '$verification_id'";
-                $this->base->prepare($sql)->execute();
+                $sql = "UPDATE user SET user_verification = NULL WHERE user_verification = ?";
+                $this->base->prepare($sql)->execute(array($verification_id));
                 return (true);
-                // if ($this->base->prepare($sql)->execute())
-                //     return (true);
-                // else
-                //     return (false);
             }
         }
 
         function modif($newuser)
         {
             if ($newuser[notification] == "on")
-                $notification = "TRUE";
+                $notification = 1;
             else
-                $notification = "FALSE";
+                $notification = 0;
             if ($newuser['oldpassword'] && $newuser['newpassword'])
             {
                 $newuser['oldpassword'] = hash("whirlpool", $newuser['oldpassword']);
                 $newuser['newpassword'] = hash("whirlpool", $newuser['newpassword']);
-                $retour = $this->base->query("SELECT password FROM user WHERE username = '$newuser[username]'");
+                $retour = $this->base->prepare("SELECT password FROM user WHERE username = ?");
+                $retour->execute(array($newuser[username]));
                 $data = $retour->fetch();
                 if ($data)
                 {
                     if ($data[password] === $newuser[oldpassword])
-                        $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', password = '$newuser[newpassword]', notification = $notification WHERE session_id = '$newuser[session_id]'";
+                    {
+                        $sql = "UPDATE user SET username = ?, email = ?, password = ?, notification = ? WHERE session_id = ?";
+                        $query = $this->base->prepare($sql);
+                        $query->execute(array($newuser[username], $newuser[email], $newuser[newpassword], $notification, $newuser[session_id]));
+                        return(true);
+                    }
                     else
                         return (false);
                 }
             }
             else
-                $sql = "UPDATE user SET username = '$newuser[username]', email = '$newuser[email]', notification = $notification WHERE session_id = '$newuser[session_id]'";
-            // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
+            {
+                $sql = "UPDATE user SET username = ?, email = ?, notification = ? WHERE session_id = ?";
+                $query = $this->base->prepare($sql);
+                $query->execute(array($newuser[username], $newuser[email], $notification, $newuser[session_id]));
+                return (true);
+            }
+                // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
             // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
             // if ($retour->fetch())
             //     return (false);
-            $this->base->prepare($sql)->execute($newuser);
-            return (true);
         }
 
         function delete($user)
         {
-            $sql = "DELETE FROM user WHERE session_id = '$user[session_id]'";
-            if ($this->base->prepare($sql)->execute())
+            $sql = "DELETE FROM user WHERE session_id = ?";
+            if ($this->base->prepare($sql)->execute(array($user[session_id])))
                 return (true);
         }
 
         function login($usertologin)
         {
             $usertologin[1] = hash("whirlpool", $usertologin[1]);
-            $retour = $this->base->query("SELECT password, user_verification FROM user WHERE username = '$usertologin[0]'");
+            $retour = $this->base->prepare("SELECT password, user_verification FROM user WHERE username = ?");
+            $retour->execute(array($usertologin[0]));
             $data = $retour->fetch();
             if ($data)
             {
@@ -123,8 +120,8 @@
                 {
                     $session_id = uniqid();
                     $_SESSION[session_id] = $session_id;
-                    $sql = "UPDATE user SET session_id = '$session_id' WHERE username = '$usertologin[0]'";
-                    $this->base->prepare($sql)->execute();
+                    $sql = "UPDATE user SET session_id = ? WHERE username = ?";
+                    $this->base->prepare($sql)->execute(array($session_id, $usertologin[0]));
                     return (true);
                 }
             }
@@ -136,8 +133,8 @@
             if ($session_id && $this->userSignedIn($session_id))
             {
                 setcookie("session_id", "", time()-3600);
-                $sql = "UPDATE user SET session_id = NULL WHERE session_id = '$session_id'";
-                $this->base->prepare($sql)->execute();
+                $sql = "UPDATE user SET session_id = NULL WHERE session_id = ?";
+                $this->base->prepare($sql)->execute(array($session_id));
                 return (true);
             }
             return (false);
@@ -148,11 +145,12 @@
             if ($email)
             {
                 $password_reset = uniqid();
-                $retour = $this->base->query("SELECT * FROM user WHERE email = '$email'");
-                if (!$retour->fetch())
+                $query = $this->base->prepare("SELECT * FROM user WHERE email = ?");
+                $query->execute(array($email));
+                if (!$query->fetch())
                     return (false);
-                $sql = "UPDATE user SET password_reset = '$password_reset' WHERE email = '$email'";
-                $this->base->prepare($sql)->execute();
+                $sql = "UPDATE user SET password_reset = ? WHERE email = ?";
+                $this->base->prepare($sql)->execute(array($password_reset, $email));
                 send_mail($email, "Reinitialisation du mot de passe Camagru", "Bonjour!\n Nous avons recu une demande de reinitialisation de mot de passe sur Camagru.\n Pour le reinitialiser, merci de cliquer sur ce lien : \n http://localhost:8080/user/reset_password.php?password_reset=$password_reset \n A bientôt!\n");
                 return (true);
             }
@@ -162,28 +160,26 @@
         {
             if ($password_reset)
             {
-                $retour = $this->base->query("SELECT * FROM user WHERE password_reset = '$password_reset'");
-                $result = $retour->fetch();
+                $query = $this->base->prepare("SELECT * FROM user WHERE password_reset = ?");
+                $query->execute(array($password_reset));
+                $result = $query->fetch();
                 if (!$result)
                     return (false);
                 $newpassword = password_hash(uniqid(), PASSWORD_BCRYPT);
                 $encryptedpassword = hash("whirlpool", $newpassword);
-                $sql = "UPDATE user SET password_reset = NULL, password = '$encryptedpassword' WHERE password_reset = '$password_reset'";
+                $sql = "UPDATE user SET password_reset = NULL, password = ? WHERE password_reset = ?";
                 send_mail($result[email], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
-                $this->base->prepare($sql)->execute();
+                $this->base->prepare($sql)->execute(array($encryptedpassword, $password_reset));
                 return (true);
-                // if ($this->base->prepare($sql)->execute())
-                //     return (true);
-                // else
-                //     return (false);
             }
         }
         function userSignedIn($session_id)
         {
             if ($session_id)
             {
-                $retour = $this->base->query("SELECT * FROM user WHERE session_id = '$session_id'");
-                $user = $retour->fetch();
+                $query = $this->base->prepare("SELECT * FROM user WHERE session_id = ?");
+                $query->execute(array($session_id));
+                $user = $query->fetch();
                 if ($user)
                     return($user);
             }
