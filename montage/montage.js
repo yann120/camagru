@@ -83,7 +83,6 @@
   });
 
   uploadButton.addEventListener('click', function (ev) {
-      // console.log(image_to_upload.files[0]);
       if (uploadedFile = image_to_upload.files[0])
       {
           fileReader = new FileReader();
@@ -91,7 +90,6 @@
               photo.src = fileLoadedEvent.target.result;
               document.upload_image.picture.value = fileLoadedEvent.target.result;
               console.log(fileLoadedEvent.target.result);
-              // image_to_post.src = ;
               photo.removeAttribute("hidden");
               videodiv.remove();
               startbutton.remove();
@@ -108,6 +106,3 @@
       }
   }, false);
 })();
-
-// upload_form.picture.src = data;
-// upload_form.submit();

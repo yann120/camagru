@@ -1,6 +1,6 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
-<?php 
+<?php
 if ($userdata)
 {
 	if ($_GET[action] === "delete")
@@ -110,5 +110,4 @@ else
 	header("Location: ./login.php?message=notloggedin");
 ?>
     </body>
-		
 </html>

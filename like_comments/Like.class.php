@@ -1,6 +1,6 @@
 <?php
     Class Like
-    {   
+    {
         private $base;
 
         function __construct()

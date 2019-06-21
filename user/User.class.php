@@ -110,7 +110,7 @@
             $pathlist = $query->fetchAll();
             foreach ($pathlist as $path) {
                 $path = $path[0];
-                if (file_exists($path)) 
+                if (file_exists($path))
                 {
                     if (unlink($path))
                         echo "Fichier supprimé ".$path;

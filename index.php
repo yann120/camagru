@@ -1,4 +1,4 @@
-<?php 
+<?php
     require './user/User.class.php';
     include './partials/navbar.php';
     if ($_GET[action] === "logout")

@@ -1,4 +1,4 @@
-<?php 
+<?php
 require '../user/User.class.php';
 require '../partials/helper.php';
 include '../partials/navbar.php';
@@ -12,7 +12,7 @@ if (!$userdata)
     $allImagesFromCurrentUser = $image->showByUserId($userdata[id]);
     if ($_GET[action] === "delete" && $_GET[image_id])
         $image->delete($userdata[id], $_GET[image_id]);
-?>  
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -33,15 +33,12 @@ if (!$userdata)
         <h1 class="title is-1 has-text-centered">Montage</h1>
         <div class="columns">
             <div class="column is-two-thirds" id="mainblock">
-                <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data"> -->
                 <div id="upload_field">
                     <p>Importer une image:
                         <input type="file" name="picture" id="image_to_upload" accept="image/png, image/jpeg" />
-                        <!-- <input hidden type="image" name="picture" id="image_to_upload" /> -->
                         <input type="submit" value="Upload" name="Upload" id="uploadButton" />
                     </p>
                 </div>
-                <!-- </form> -->
                 <div id="video" hidden>
                     <video id="webcam" autoplay width="600" height="400"></video>
                     <img src="../img/montage/1.png" class="live-mask" id="1" hidden>
@@ -49,7 +46,6 @@ if (!$userdata)
 					    <button id="snap-btn" disabled><span class="fas fa-3x fa-camera"></span></button>
 				    </div>
                 </div>
-      
                 <div class="control flex-row" id="mask-bar">
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="1" checked hidden>
@@ -57,25 +53,25 @@ if (!$userdata)
                     </label>
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="2" hidden>
-                        <img src="../img/montage/2.png" class="mask-icon">                        
+                        <img src="../img/montage/2.png" class="mask-icon">
                     </label>
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="3" hidden>
-                        <img src="../img/montage/3.png" class="mask-icon">                        
+                        <img src="../img/montage/3.png" class="mask-icon">
                     </label>
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="4" hidden>
-                        <img src="../img/montage/4.png" class="mask-icon">                        
+                        <img src="../img/montage/4.png" class="mask-icon">
                     </label>
                     <label class="radio">
                         <input type="radio" name="mask-choice" class="mask-choice" id="5" hidden>
-                        <img src="../img/montage/5.png" class="mask-icon">                        
+                        <img src="../img/montage/5.png" class="mask-icon">
                     </label>
                 </div>
                 <div class="output">
-                    <canvas hidden id="canvas"></canvas>       
+                    <canvas hidden id="canvas"></canvas>
                     <img hidden id="photo" alt="photo">
-                    <img hidden class="live-mask" id="1"> 
+                    <img hidden class="live-mask" id="1">
                 </div>
                 <form action="" name="upload_image" method="post" enctype="multipart/form-data">
                 <input hidden type="hidden" name="picture" id="image_to_post" />
@@ -89,7 +85,7 @@ if (!$userdata)
             </div>
             <div class="column is-offset-1" id="side-bar">
                 <?php
-                    foreach ($allImagesFromCurrentUser as $image) 
+                    foreach ($allImagesFromCurrentUser as $image)
                     {
                         echo "<div class='singleImage'>";
                             echo "<img src='$image[path]' class='shotImages' >";
@@ -100,7 +96,7 @@ if (!$userdata)
             </div>
         </div>
     </div>
-        
+
     </body>
     <footer id="footer">
             <p>Camagru born @42 Made with <span class="fas fa-heart"></span> by Yann PETITJEAN</p>

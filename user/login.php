@@ -60,7 +60,7 @@ if($_GET[message] === "notloggedin")
 				</div>
 			</div>
 		</div>
-		<?php 
+		<?php
 		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'])
 		{
 			$usertologin = array($_POST['username'], $_POST['password']);

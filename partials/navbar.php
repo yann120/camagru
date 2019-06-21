@@ -1,4 +1,4 @@
-<?php 
+<?php
   session_start();
   $user = new User();
   $userdata = $user->userSignedIn($_SESSION['session_id']);
@@ -70,7 +70,7 @@
             Log in
           </a>
         <?php }
-          else 
+          else
           { ?>
           <a class="button is-primary" href="/user/modif.php">
             <strong>Modify account</strong>

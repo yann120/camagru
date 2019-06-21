@@ -59,7 +59,7 @@ if ($_GET[like]  && $userdata)
                     </a>
                     <a class='card-footer-item' onclick='activateModal($image[image_id])'>Comment</a>
                 </footer>";
-                echo   "</div> 
+                echo   "</div>
                         <div class='modal' id ='modal$image[image_id]'>
                         <div class='modal-background'></div>
                         <div class='modal-card'>

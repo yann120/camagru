@@ -1,6 +1,6 @@
 <?php
     Class Comments
-    {   
+    {
         private $base;
 
         function __construct()
@@ -38,13 +38,13 @@
                     'X-Mailer: PHP/' . phpversion();
             mail($email, $subject, $message, $headers);
         }
-        
+
         function commentNotification($image_id, $username_who_comment, $content)
         {
             $sql = "SELECT user.email as `email`, user.username as `username`, user.notification as `notification` 
-            FROM user 
-            INNER JOIN images 
-            WHERE images.user_id = user.id 
+            FROM user
+            INNER JOIN images
+            WHERE images.user_id = user.id
             AND images.id = ?";
             $retour = $this->base->prepare($sql);
             $retour->execute(array($image_id));
