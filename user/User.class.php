@@ -96,10 +96,6 @@
                 $query->execute(array($newuser[username], $newuser[email], $notification, $newuser[session_id]));
                 return (true);
             }
-                // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
-            // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
-            // if ($retour->fetch())
-            //     return (false);
         }
 
         private function deleteImagesfromUserId($userid)
