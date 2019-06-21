@@ -9,6 +9,7 @@
             session_start();
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
@@ -101,11 +102,39 @@
             //     return (false);
         }
 
+        private function deleteImagesfromUserId($userid)
+        {
+            $sql = "SELECT path FROM images WHERE user_id = ?";
+            $query = $this->base->prepare($sql);
+            $query->execute(array($userid));
+            $pathlist = $query->fetchAll();
+            foreach ($pathlist as $path) {
+                $path = $path[0];
+                if (file_exists($path)) 
+                {
+                    if (unlink($path))
+                        echo "Fichier supprimé ".$path;
+                    else
+                        echo "Pas supprimé le fichier physique";
+                }
+                else
+                    echo "non existant";
+            }
+        }
+
         function delete($user)
         {
-            $sql = "DELETE FROM user WHERE session_id = ?";
-            if ($this->base->prepare($sql)->execute(array($user[session_id])))
-                return (true);
+            $userid = intval($user[id]);
+            $this->deleteImagesfromUserId($userid);
+            $sql1 = "DELETE FROM user WHERE id = ?";
+            $sql2 = "DELETE FROM images WHERE user_id = ?";
+            $sql3 = "DELETE FROM images_like WHERE user_id = ?";
+            $sql4 = "DELETE FROM comments WHERE user_id = ?";
+            $this->base->prepare($sql1)->execute(array($userid));
+            $this->base->prepare($sql2)->execute(array($userid));
+            $this->base->prepare($sql3)->execute(array($userid));
+            $this->base->prepare($sql4)->execute(array($userid));
+            return (true);
         }
 
         function login($usertologin)
