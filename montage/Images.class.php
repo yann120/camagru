@@ -36,6 +36,12 @@
             $this->base = null;
         }
 
+        private function deletePictureByPath($path)
+        {
+            if (file_exists($path))
+                unlink($path);
+        }
+
         private function montage($file, $mask_id)
         {
             if (exif_imagetype($file) == IMAGETYPE_PNG)
@@ -56,7 +62,6 @@
             $height_pictureresized = imagesy($pictureresized);
             imagecopy($pictureresized, $mask, 0, 0, 0, 0, $width_pictureresized, $height_pictureresized);
             return($pictureresized);
-
         }
 
         function upload($user_id, $mask_id, $picture)
@@ -71,7 +76,6 @@
             $file = $folderPath.$filename.".png";
             file_put_contents($file, $image_base64);
             $picture = $this->montage($file, $mask_id);
-            // TODO: delete temp picture
             $folderPath = "../public/".$user_id."/";
             mkdir($folderPath, 0777, true);
             $filename = uniqid();
@@ -79,6 +83,7 @@
             if (imagejpeg($picture, $file))
             {
                 $this->storeImageToDB($file, $user_id);
+                // $this->deletePictureByPath($file);
             }
             else
             {
