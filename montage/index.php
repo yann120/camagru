@@ -24,7 +24,7 @@ if (!$userdata)
         <link rel="stylesheet" href="montage.css">
         <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     </head>
-    <body>
+    <body class="bg">
     <div class="container is-fluid">
         <?php
         if ($_GET[message] === "deleted")
@@ -85,6 +85,7 @@ if (!$userdata)
                     <button type="submit" id="postButton" hidden name="Post" value="Post_Picture">Post</button>
 				</div>
                 </form>
+                <br><br>
             </div>
             <div class="column has-background-link is-offset-1" id="side-bar">
                 <?php
@@ -101,5 +102,8 @@ if (!$userdata)
     </div>
         
     </body>
+    <footer id="footer">
+            <p>Camagru born @42 Made with <span class="fas fa-heart"></span> by Yann PETITJEAN</p>
+    </footer>
         <script src="montage.js"></script>
 </html>

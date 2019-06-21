@@ -31,12 +31,13 @@ if ($_GET[like]  && $userdata)
         <link rel="stylesheet" type = "text/css" href="main.css">
         <script src="script.js"></script>
     </head>
-    <body>
+    <body id="bg">
         <h1 class="title is-1 has-text-centered">Galerie</h1>
         <div class="container is-fluid">
         <?php
             foreach ($allimages as $image) {
                 $liked = $like->isLiked($userdata[id],$image[image_id]);
+                $image[username] = strip_tags($image[username]);
                 echo "<div class='card'>
                 <div class='card-image'>
                     <figure class='image is-4by3'>
@@ -100,10 +101,13 @@ if ($_GET[like]  && $userdata)
         <div class="columns is-centered">
         <nav class="column is-four-fifths" role="navigation" aria-label="pagination">
             <div id="bottom_pagination">
-                <a class="pagination-previous" <?php $image_class->newPage(1, intval($page_number)) ?>>Previous</a>
-                <a class="pagination-next" <?php $image_class->newPage(0, intval($page_number)) ?>>Next page</a>
+                <a class="pagination-previous pagination-button" <?php $image_class->newPage(1, intval($page_number)) ?>>Previous</a>
+                <a class="pagination-next pagination-button" <?php $image_class->newPage(0, intval($page_number)) ?>>Next page</a>
             </div>
         </nav>
         </div>
     </body>
+    <footer id="footer">
+            <p>Camagru born @42 Made with <span class="fas fa-heart"></span> by Yann PETITJEAN</p>
+    </footer>
 </html>

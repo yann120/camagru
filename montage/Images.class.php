@@ -84,7 +84,6 @@
             $file = $folderPath.$filename.".jpg";
             if (imagejpeg($picture, $file))
             {
-                echo "Transfert réussi";
                 $this->storeImageToDB($file, $user_id);
             }
             else

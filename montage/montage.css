@@ -30,12 +30,8 @@
 }
 
 .live-mask {
-    /* z-index: 3;  */
-    /* float: left; */
     margin-left: -600;
     position: absolute;
-    z-index: 1;
-    /* text-align: center; */
 }
 
 #photo {
@@ -75,6 +71,28 @@
 }
 
 #side-bar {
-    height: 600px;
+    height: 800px;
     overflow-y: auto;
+}
+
+h1 {
+    padding: 30px;
+}
+
+#footer {
+	background-color: gray;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+.bg {
+    background-image: url("../img/venise.jpg");
+    height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
