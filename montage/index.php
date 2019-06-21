@@ -32,7 +32,7 @@ if (!$userdata)
         ?>
         <h1 class="title is-1 has-text-centered">Montage</h1>
         <div class="columns">
-            <div class="column is-two-thirds has-background-primary">
+            <div class="column is-two-thirds" id="mainblock">
                 <!-- <form action="" name="upload_image" method="post" enctype="multipart/form-data"> -->
                 <div id="upload_field">
                     <p>Importer une image:
@@ -87,7 +87,7 @@ if (!$userdata)
                 </form>
                 <br><br>
             </div>
-            <div class="column has-background-link is-offset-1" id="side-bar">
+            <div class="column is-offset-1" id="side-bar">
                 <?php
                     foreach ($allImagesFromCurrentUser as $image) 
                     {

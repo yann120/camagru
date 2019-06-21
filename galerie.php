@@ -48,8 +48,9 @@ if ($_GET[like]  && $userdata)
                             <p class='title is-4'>$image[username]</p>
                             <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
                             <time datetime='$image[creation_date]'>$image[creation_date]</time>
-                </div>
-                <footer class='card-footer'>
+                </div>";
+                if ($userdata)
+                echo "<footer class='card-footer'>
                     <a href='galerie.php?like=$image[image_id]' id='$image[image_id]' class='card-footer-item $liked'>
                         <span class='icon'>
                             <i class='fas fa-thumbs-up'></i>
@@ -57,9 +58,9 @@ if ($_GET[like]  && $userdata)
                         Like
                     </a>
                     <a class='card-footer-item' onclick='activateModal($image[image_id])'>Comment</a>
-                </footer>
-            </div>";
-                echo   "<div class='modal' id ='modal$image[image_id]'>
+                </footer>";
+                echo   "</div> 
+                        <div class='modal' id ='modal$image[image_id]'>
                         <div class='modal-background'></div>
                         <div class='modal-card'>
                             <header class='modal-card-head'>

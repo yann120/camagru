@@ -27,20 +27,14 @@
 			<div class="field">
 			<label class="label">Email</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-danger" type="email" name="email" required placeholder="Email">
+				<input class="input" type="email" name="email" required placeholder="Email">
 				<span class="icon is-small is-left">
 				<i class="fas fa-envelope"></i>
 				</span>
-				<span class="icon is-small is-right">
-				<i class="fas fa-exclamation-triangle"></i>
-				</span>
 			</div>
-			<p class="help is-danger">This email is invalid</p>
 			</div>
 			<div class="control">
 			<input type="submit" class="button is-success" name="submit" value="OK">
-			</div>
-			<div class="control">
 				<button class="button is-danger" onclick="location.href='/index.php'"> Cancel</button>
 			</div>
 			</div>

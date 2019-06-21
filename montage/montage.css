@@ -73,6 +73,13 @@
 #side-bar {
     height: 800px;
     overflow-y: auto;
+    background-color: lightgray;
+    opacity: 0.95;
+}
+
+#mainblock {
+    background-color: lightgray;
+    opacity: 0.95;
 }
 
 h1 {

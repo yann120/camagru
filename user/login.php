@@ -56,7 +56,7 @@ if($_GET[message] === "notloggedin")
 				<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
 			</div>
 			<div class="control">
-					<a class="button is-danger" href = "/user/reset_password.php">Mot de passe oublié</a>
+					<a class="button is-warning" href = "/user/reset_password.php">Mot de passe oublié</a>
 				</div>
 			</div>
 		</div>
