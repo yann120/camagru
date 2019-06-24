@@ -2,17 +2,19 @@
 require_once 'like_comments/Comments.class.php';
 require_once './user/User.class.php';
 $user = new User();
+$comments_class = new Comments();
+session_start();
 $userdata = $user->userSignedIn($_SESSION['session_id']);
-if (!$_GET[id])
+if (isset($_POST['submit']) && $_POST['submit'] === "Poster" && isset($userdata))
+{
+    $comments_class->addComment($_POST['content'], $_POST['image_id'], $userdata['id'], $userdata['username']);
+}
+if (!isset($_GET[id]))
     header("Location: ./galerie.php");
 $image_id = intval($_GET[id]);
 $comments_class = new Comments;
-if ($_POST[submit] === "Poster" && $userdata)
-{
-    $comments_class->addComment($_POST[content], $_POST[image_id], $userdata[id], $userdata[username]);
-}
+
 $comments = $comments_class->showComments($image_id);
-// print_r($comments); // la liste de tout les commentaires est gérée en back, il faut l'afficher joliement en front maintenant
 ?>
         <div class="container is-fluid">
         <table>
@@ -23,6 +25,6 @@ $comments = $comments_class->showComments($image_id);
             echo "<tr>";
             echo "<td><b>{$comment[username]}:</b> {$comment[comment]}<br></td>";
             echo "</tr>";
-        } 
+        }
         ?>
         </table>

@@ -1,12 +1,12 @@
 <?php
     require './user/User.class.php';
     include './partials/navbar.php';
-    if ($_GET[action] === "logout")
+    if ($_GET && $_GET[action] === "logout")
     {
         if ($user->logout($_SESSION['session_id']))
             echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
     }
-    if ($_GET[user_verification])
+    if ($_GET && $_GET[user_verification])
     {
         if ($user->user_validation($_GET[user_verification]))
             $message = "Utilisateur validé!";
@@ -28,16 +28,16 @@
         <div id="homepagetext">
             <h1 class="title is-1 has-text-centered">Home</h1>
             <?php
-                if ($userdata)
+                if (isset($userdata) && isset($userdata['username']))
                 {
-                    $userdata[username] = strip_tags($userdata[username]);
+                    $userdata['username'] = strip_tags($userdata['username']);
                     echo "<h3 class='title is-3 has-text-centered homepagetext'>Bonjour $userdata[username]</h3><h3 class='homepagetext title is-3 has-text-centered'>Camagru va te faire vivre le carnaval de Venise comme si tu y étais!</h3>";
                 }
                 else
                 {
                     echo "<h3 class='homepagetext title is-3 has-text-centered'>Connecte toi pour vivre le carnaval de Venise!</h3>";
                 }
-                if ($message)
+                if (isset($message))
                     echo "<h3 class='title is-3 has-text-centered homepagetext'>$message</h3>";
             ?>
         </div>

@@ -6,7 +6,6 @@
         {
             if (!include 'config/database.php')
                 include '../config/database.php';
-            session_start();
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
                 $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

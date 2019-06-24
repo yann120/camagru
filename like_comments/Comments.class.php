@@ -5,7 +5,6 @@
 
         function __construct()
         {
-            session_start();
             if (!include 'config/database.php')
                 include '../config/database.php';
             try {
@@ -58,7 +57,8 @@
         function addComment($content, $image_id, $user_id, $username_who_comment)
         {
             $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES (?, ?, ?);";
-            $this->base->prepare($sql)->execute(array($content, $user_id, $image_id));
+            $query = $this->base->prepare($sql);
+            $query->execute(array($content, $user_id, $image_id));
             $this->commentNotification($image_id, $username_who_comment, $content);
         }
 

@@ -5,18 +5,18 @@ require_once 'like_comments/Like.class.php';
 $image_class = new Images;
 $like = new Like;
 $page_number = 0;
-if ($_GET[page])
-    $page_number = $_GET[page];
+if (isset($_GET['page']))
+    $page_number = $_GET['page'];
 $allimages = $image_class->showAll($page_number);
-if ($_GET[action] === "logout")
+if (isset($_GET['action']) && $_GET['action'] === "logout")
 {
     if ($user->logout($_SESSION['session_id']))
         echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
 }
-if ($_GET[like]  && $userdata)
+if ($_GET['like']  && isset($userdata))
 {
-    $image_id = intval($_GET[like]);
-    $like->likeUnlike($userdata[id], $image_id);
+    $image_id = intval($_GET['like']);
+    $like->likeUnlike($userdata['id'], $image_id);
 }
 
 ?>
@@ -36,9 +36,9 @@ if ($_GET[like]  && $userdata)
         <div class="container is-fluid">
         <?php
             foreach ($allimages as $image) {
-                $liked = $like->isLiked($userdata[id],$image[image_id]);
-                $nb_of_like = $like->likeCounter($image[image_id]);
-                $image[username] = strip_tags($image[username]);
+                $liked = $like->isLiked($userdata['id'],$image['image_id']);
+                $nb_of_like = $like->likeCounter($image['image_id']);
+                $image['username'] = strip_tags($image['username']);
                 echo "<div class='card'>
                 <div class='card-image'>
                     <figure class='image is-4by3'>
@@ -72,7 +72,7 @@ if ($_GET[like]  && $userdata)
                             <section id='ModalBody' class='modal-card-body'>
                             <iframe id='Comment'
                             title='Comments'
-                            src='/comments.php?id={$image[image_id]}'>
+                            src='/comments.php?id={$image['image_id']}'>
                         </iframe>
                             </section>
                             <footer class='modal-card-foot'>

@@ -3,7 +3,7 @@
 <?php
 if ($userdata)
 {
-	if ($_GET[action] === "delete")
+	if (isset($_GET[action]) && $_GET[action] === "delete")
 		{
 			if ($user->delete($userdata))
 				echo "<script type='text/javascript'> document.location = '/index.php'; </script>";

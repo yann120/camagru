@@ -5,7 +5,6 @@
 
         function __construct()
         {
-            session_start();
             if (!include 'config/database.php')
                 include '../config/database.php';
             try {

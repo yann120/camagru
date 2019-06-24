@@ -7,10 +7,10 @@ if (!$userdata)
 	header("Location: ../user/login.php?message=notloggedin");
     $image = new Images;
     // print_r($userdata);
-    if ($_POST['Post'] === 'Post_Picture')
+    if (isset($_POST['Post']) && $_POST['Post'] === 'Post_Picture')
         $image->upload($userdata[id], $_POST[mask], $_POST[picture]);
     $allImagesFromCurrentUser = $image->showByUserId($userdata[id]);
-    if ($_GET[action] === "delete" && $_GET[image_id])
+    if (isset($_GET[action]) && $_GET[action] === "delete" && isset($_GET[image_id]))
         $image->delete($userdata[id], $_GET[image_id]);
 ?>
 <!DOCTYPE html>
@@ -27,7 +27,7 @@ if (!$userdata)
     <body class="bg">
     <div class="container is-fluid">
         <?php
-        if ($_GET[message] === "deleted")
+        if (isset($_GET[message]) && $_GET[message] === "deleted")
             echo "Image supprimée!";
         ?>
         <h1 class="title is-1 has-text-centered">Montage</h1>
