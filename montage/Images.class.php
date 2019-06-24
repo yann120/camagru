@@ -61,6 +61,7 @@
             $width_pictureresized = imagesx($pictureresized);
             $height_pictureresized = imagesy($pictureresized);
             imagecopy($pictureresized, $mask, 0, 0, 0, 0, $width_pictureresized, $height_pictureresized);
+            $this->deletePictureByPath($file);
             return($pictureresized);
         }
 
@@ -83,7 +84,6 @@
             if (imagejpeg($picture, $file))
             {
                 $this->storeImageToDB($file, $user_id);
-                // $this->deletePictureByPath($file);
             }
             else
             {
