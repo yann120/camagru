@@ -37,6 +37,7 @@ if ($_GET[like]  && $userdata)
         <?php
             foreach ($allimages as $image) {
                 $liked = $like->isLiked($userdata[id],$image[image_id]);
+                $nb_of_like = $like->likeCounter($image[image_id]);
                 $image[username] = strip_tags($image[username]);
                 echo "<div class='card'>
                 <div class='card-image'>
@@ -48,6 +49,7 @@ if ($_GET[like]  && $userdata)
                             <p class='title is-4'>$image[username]</p>
                             <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
                             <time datetime='$image[creation_date]'>$image[creation_date]</time>
+                            <p class='subtitle is-6'>$nb_of_like like</p>
                 </div>";
                 if ($userdata)
                 echo "<footer class='card-footer'>

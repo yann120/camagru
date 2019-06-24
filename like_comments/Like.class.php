@@ -56,5 +56,14 @@
                 $this->base->prepare($sql)->execute(array($user_id, $image_id));
             }
         }
+
+        function likeCounter($image_id)
+        {
+            $sql = "SELECT COUNT(image_id) FROM `images_like` WHERE image_id = ?";
+            $query = $this->base->prepare($sql);
+            $query->execute(array(strval($image_id)));
+            $result = $query->fetch();
+            return ($result[0]);
+        }
     }
 ?>
