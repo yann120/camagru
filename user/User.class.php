@@ -43,8 +43,10 @@
             $retour->execute(array($newuser[0], $newuser[1]));
             if ($retour->fetch())
                 return (false);
+            echo "ici";
             $sql = "INSERT INTO user (username, email, password, user_verification) VALUES (?,?,?,?)";
-            $this->base->prepare($sql)->execute($newuser);
+            $query = $this->base->prepare($sql);
+            $query->execute($newuser);
             send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n Merci pour ton inscription sur Camagru.\n Pour valider ton compte, merci de cliquer sur ce lien : \n http://localhost:8080/index.php?user_verification=$newuser[3] \n A bientôt!\n");
             return (true);
         }
