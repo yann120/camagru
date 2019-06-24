@@ -62,7 +62,7 @@
 			</div>
 			</form>
 		</div>
-		<?php 
+		<?php
 		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'] && $_POST['email'])
 		{
 			$newuser = array($_POST['username'], $_POST['email'], $_POST['password']);
@@ -73,5 +73,4 @@
 		}
 		?>
     </body>
-		
 </html>

@@ -1,19 +1,20 @@
 <?php
     Class Comments
-    {   
+    {
         private $base;
 
         function __construct()
         {
             session_start();
+            if (!include 'config/database.php')
+                include '../config/database.php';
             try {
-                $this->base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
+                $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
               }
-              $this->base->exec("SET CHARACTER SET utf8");
-              
         }
 
         function __get($attribut)
@@ -37,15 +38,16 @@
                     'X-Mailer: PHP/' . phpversion();
             mail($email, $subject, $message, $headers);
         }
-        
+
         function commentNotification($image_id, $username_who_comment, $content)
         {
             $sql = "SELECT user.email as `email`, user.username as `username`, user.notification as `notification` 
-            FROM user 
-            INNER JOIN images 
-            WHERE images.user_id = user.id 
-            AND images.id = '$image_id'";
-            $retour = $this->base->query($sql);
+            FROM user
+            INNER JOIN images
+            WHERE images.user_id = user.id
+            AND images.id = ?";
+            $retour = $this->base->prepare($sql);
+            $retour->execute(array($image_id));
             $user = $retour->fetch();
             echo "Ok";
             $message = "Bonjour $user[username]!\nTu est populaire, $username_who_comment vient de commenter le montage numero $image_id.\n Son commentaire est :\n$content\n";
@@ -55,15 +57,16 @@
 
         function addComment($content, $image_id, $user_id, $username_who_comment)
         {
-            $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES ('$content', '$user_id', '$image_id');";
-            $this->base->prepare($sql)->execute();
+            $sql = "INSERT INTO `comments` (`comment`, `user_id`, `image_id`) VALUES (?, ?, ?);";
+            $this->base->prepare($sql)->execute(array($content, $user_id, $image_id));
             $this->commentNotification($image_id, $username_who_comment, $content);
         }
 
         function showComments($image_id)
         {
-            $sql = "SELECT user.username as 'username', comment, creation_date FROM comments, user WHERE image_id = '$image_id' AND user_id = user.id;";
-            $retour = ($this->base->query($sql));
+            $sql = "SELECT user.username as 'username', comment, creation_date FROM comments, user WHERE image_id = ? AND user_id = user.id;";
+            $retour = ($this->base->prepare($sql));
+            $retour->execute(array($image_id));
             $comments = [];
             while($data = $retour->fetch())
                 array_push($comments, $data);

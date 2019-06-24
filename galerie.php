@@ -31,12 +31,13 @@ if ($_GET[like]  && $userdata)
         <link rel="stylesheet" type = "text/css" href="main.css">
         <script src="script.js"></script>
     </head>
-    <body>
+    <body id="bg">
         <h1 class="title is-1 has-text-centered">Galerie</h1>
         <div class="container is-fluid">
         <?php
             foreach ($allimages as $image) {
                 $liked = $like->isLiked($userdata[id],$image[image_id]);
+                $image[username] = strip_tags($image[username]);
                 echo "<div class='card'>
                 <div class='card-image'>
                     <figure class='image is-4by3'>
@@ -47,9 +48,9 @@ if ($_GET[like]  && $userdata)
                             <p class='title is-4'>$image[username]</p>
                             <p class='subtitle is-6'><a href='mailto:$image[email]'>Envoyer un email</a></p>
                             <time datetime='$image[creation_date]'>$image[creation_date]</time>
-                            <iframe class='share-btn' src='https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Flocalhost%3A8080%2Fpublic%2F1%2F5cf8d45cb1b3f.jpg&layout=button&size=small&width=73&height=20&appId' width='73' height='20' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'></iframe>
-                </div>
-                <footer class='card-footer'>
+                </div>";
+                if ($userdata)
+                echo "<footer class='card-footer'>
                     <a href='galerie.php?like=$image[image_id]' id='$image[image_id]' class='card-footer-item $liked'>
                         <span class='icon'>
                             <i class='fas fa-thumbs-up'></i>
@@ -57,9 +58,9 @@ if ($_GET[like]  && $userdata)
                         Like
                     </a>
                     <a class='card-footer-item' onclick='activateModal($image[image_id])'>Comment</a>
-                </footer>
-            </div>";
-                echo   "<div class='modal' id ='modal$image[image_id]'>
+                </footer>";
+                echo   "</div>
+                        <div class='modal' id ='modal$image[image_id]'>
                         <div class='modal-background'></div>
                         <div class='modal-card'>
                             <header class='modal-card-head'>
@@ -101,10 +102,13 @@ if ($_GET[like]  && $userdata)
         <div class="columns is-centered">
         <nav class="column is-four-fifths" role="navigation" aria-label="pagination">
             <div id="bottom_pagination">
-                <a class="pagination-previous" <?php $image_class->newPage(1, intval($page_number)) ?>>Previous</a>
-                <a class="pagination-next" <?php $image_class->newPage(0, intval($page_number)) ?>>Next page</a>
+                <a class="pagination-previous pagination-button" <?php $image_class->newPage(1, intval($page_number)) ?>>Previous</a>
+                <a class="pagination-next pagination-button" <?php $image_class->newPage(0, intval($page_number)) ?>>Next page</a>
             </div>
         </nav>
         </div>
     </body>
+    <footer id="footer">
+            <p>Camagru born @42 Made with <span class="fas fa-heart"></span> by Yann PETITJEAN</p>
+    </footer>
 </html>

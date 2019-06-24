@@ -22,6 +22,40 @@
 	padding: 0;
 }
 
-.share-btn {
-	height: 1.5rem;
+h1 {
+	padding: 30px;
+}
+
+#footer {
+	background-color: gray;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	text-align: center;
+	padding: 10px;
+	z-index: 1000;
+}
+#bg {
+    background-image: url("img/venise.jpg");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.homepagetext {
+	opacity: 0.6;
+	color: blue;
+}
+
+.pagination-button {
+	opacity: 0.9;
+	background-color: gray;
+}
+
+.card {
+	background-color: lightgray;
+	opacity: 0.95;
 }

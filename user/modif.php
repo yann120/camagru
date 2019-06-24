@@ -1,6 +1,6 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
-<?php 
+<?php
 if ($userdata)
 {
 	if ($_GET[action] === "delete")
@@ -30,6 +30,11 @@ if ($userdata)
 					<span class="icon is-small is-left">
 					<i class="fas fa-user"></i>
 					</span>
+					<span class="icon is-small is-right">
+					<i class="fas fa-check"></i>
+					</span>
+				</div>
+				</div>
 
 				<div class="field">
 				<label class="label">Email</label>
@@ -38,6 +43,8 @@ if ($userdata)
 					<span class="icon is-small is-left">
 					<i class="fas fa-envelope"></i>
 					</span>
+				</div>
+				</div>
 
 				<div class="field">
 				<label class="label">Old password</label>
@@ -103,5 +110,4 @@ else
 	header("Location: ./login.php?message=notloggedin");
 ?>
     </body>
-		
 </html>

@@ -1,19 +1,20 @@
 <?php
     Class Like
-    {   
+    {
         private $base;
 
         function __construct()
         {
             session_start();
+            if (!include 'config/database.php')
+                include '../config/database.php';
             try {
-                $this->base = new PDO('mysql:host=localhost; dbname=camagru', 'root', '424242');
+                $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
               }
-              $this->base->exec("SET CHARACTER SET utf8");
-              
         }
 
         function __get($attribut)
@@ -32,8 +33,9 @@
 
         function isLiked($user_id, $image_id)
         {
-            $sql = "SELECT id FROM images_like WHERE user_id = '$user_id' AND image_id = '$image_id';";
-            $retour = ($this->base->query($sql));
+            $sql = "SELECT id FROM images_like WHERE user_id = ? AND image_id = ?;";
+            $retour = ($this->base->prepare($sql));
+            $retour->execute(array($user_id, $image_id));
             if ($retour->fetch())
             {
                 return("has-background-link has-text-white");
@@ -45,13 +47,13 @@
         {
             if ($this->isLiked($user_id, $image_id))
             {
-                $sql = "DELETE FROM `images_like` WHERE user_id = '$user_id' AND image_id = '$image_id'";
-                $this->base->prepare($sql)->execute();
+                $sql = "DELETE FROM `images_like` WHERE user_id = ? AND image_id = ?";
+                $this->base->prepare($sql)->execute(array($user_id, $image_id));
             }
             else
             {
-                $sql = "INSERT INTO `images_like` (`id`, `user_id`, `image_id`) VALUES (NULL, '$user_id', '$image_id');";
-                $this->base->prepare($sql)->execute();
+                $sql = "INSERT INTO `images_like` (`id`, `user_id`, `image_id`) VALUES (NULL, ?, ?);";
+                $this->base->prepare($sql)->execute(array($user_id, $image_id));
             }
         }
     }

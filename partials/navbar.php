@@ -1,8 +1,7 @@
-<?php 
+<?php
   session_start();
   $user = new User();
   $userdata = $user->userSignedIn($_SESSION['session_id']);
-  // print_r($userdata);
 ?>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -71,7 +70,7 @@
             Log in
           </a>
         <?php }
-          else 
+          else
           { ?>
           <a class="button is-primary" href="/user/modif.php">
             <strong>Modify account</strong>
