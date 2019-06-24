@@ -28,7 +28,7 @@
           video.play();
       })
       .catch((err) => {
-          console.log("An error occured! " + err);
+        //   console.log("An error occured! " + err);
       });
 
   video.addEventListener('canplay', function (ev) {
@@ -54,8 +54,6 @@
       live_mask[1].removeAttribute("hidden");
       live_mask[1].removeAttribute("hidden");
       postButton.removeAttribute("hidden");
-
-      console.log(data);
       changeMask(live_mask[0].id);
   }
 
@@ -89,7 +87,6 @@
           fileReader.onload = (fileLoadedEvent) => {
               photo.src = fileLoadedEvent.target.result;
               document.upload_image.picture.value = fileLoadedEvent.target.result;
-              console.log(fileLoadedEvent.target.result);
               photo.removeAttribute("hidden");
               videodiv.remove();
               startbutton.remove();
