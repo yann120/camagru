@@ -8,10 +8,10 @@ if (!$userdata)
     $image = new Images;
     // print_r($userdata);
     if (isset($_POST['Post']) && $_POST['Post'] === 'Post_Picture')
-        $image->upload($userdata[id], $_POST[mask], $_POST[picture]);
-    $allImagesFromCurrentUser = $image->showByUserId($userdata[id]);
-    if (isset($_GET[action]) && $_GET[action] === "delete" && isset($_GET[image_id]))
-        $image->delete($userdata[id], $_GET[image_id]);
+        $image->upload($userdata['id'], $_POST['mask'], $_POST['picture']);
+    $allImagesFromCurrentUser = $image->showByUserId($userdata['id']);
+    if (isset($_GET['action']) && $_GET['action'] === "delete" && isset($_GET['image_id']))
+        $image->delete($userdata['id'], $_GET['image_id']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,7 +27,7 @@ if (!$userdata)
     <body class="bg">
     <div class="container is-fluid">
         <?php
-        if (isset($_GET[message]) && $_GET[message] === "deleted")
+        if (isset($_GET['message']) && $_GET['message'] === "deleted")
             echo "Image supprimée!";
         ?>
         <h1 class="title is-1 has-text-centered">Montage</h1>

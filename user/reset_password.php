@@ -2,9 +2,9 @@
 <?php require '../partials/helper.php'?>
 <?php include '../partials/navbar.php'?>
 <?php
- if ($_GET[password_reset])
+ if (isset($_GET['password_reset']))
  {
-     if ($user->resetPasswordRequestP2($_GET[password_reset]))
+     if ($user->resetPasswordRequestP2($_GET['password_reset']))
          $message = "Vous avez recu votre nouveau mot de passe par mail";
      else
          $message = "Lien de reinitialisation erroné";
@@ -40,7 +40,7 @@
 			</form>
 		</div>
 		<?php 
-		if ($_POST['submit'] === "OK" && $_POST['email'])
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['email']))
 		{
 			$email = $_POST['email'];
 			if ($user->resetPasswordRequestP1($email))
@@ -48,9 +48,8 @@
 			else
 				echo "<h3 class='title is-3 has-text-centered'>Ce compte n'existe pas</h3>";
         }
-        if ($message)
+        if (isset($message))
             echo "<h3 class='title is-3 has-text-centered'>$message</h3>";
 		?>
     </body>
-		
 </html>

@@ -9,9 +9,11 @@ if (isset($_POST['submit']) && $_POST['submit'] === "Poster" && isset($userdata)
 {
     $comments_class->addComment($_POST['content'], $_POST['image_id'], $userdata['id'], $userdata['username']);
 }
-if (!isset($_GET[id]))
+if (!isset($_GET['id']))
     header("Location: ./galerie.php");
-$image_id = intval($_GET[id]);
+else
+{
+$image_id = intval($_GET['id']);
 $comments_class = new Comments;
 
 $comments = $comments_class->showComments($image_id);
@@ -20,11 +22,12 @@ $comments = $comments_class->showComments($image_id);
         <table>
         <?php
         foreach($comments as $comment) {
-            $comment[username] = strip_tags($comment[username]);
-            $comment[comment] = strip_tags($comment[comment]);
+            $username = strip_tags($comment['username']);
+            $content = strip_tags($comment['comment']);
             echo "<tr>";
-            echo "<td><b>{$comment[username]}:</b> {$comment[comment]}<br></td>";
+            echo "<td><b>{$username}:</b> {$content}<br></td>";
             echo "</tr>";
         }
         ?>
         </table>
+<?php } ?>

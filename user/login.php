@@ -1,7 +1,7 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
 <?php
-if($_GET[message] === "notloggedin")
+if(isset($_GET['message']) && $_GET['message'] === "notloggedin")
 {
 		echo "<article class='message is-danger'>
 		<div class='message-header'>
@@ -52,16 +52,14 @@ if($_GET[message] === "notloggedin")
 			<input type="submit" class="button is-success" name="submit" value="OK">
 			</div>
 			</form>
-			<div class="control">
-				<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
-			</div>
+
 			<div class="control">
 					<a class="button is-warning" href = "/user/reset_password.php">Mot de passe oublié</a>
 				</div>
 			</div>
 		</div>
 		<?php
-		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'])
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['username']) && isset($_POST['password']))
 		{
 			$usertologin = array($_POST['username'], $_POST['password']);
 			if ($user->login($usertologin))

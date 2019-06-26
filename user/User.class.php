@@ -4,7 +4,9 @@
 
         function __construct()
         {
-            if (!include 'config/database.php')
+            if (file_exists('config/database.php'))
+                include 'config/database.php';
+            else if (file_exists('../config/database.php'))
                 include '../config/database.php';
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
@@ -66,24 +68,24 @@
 
         function modif($newuser)
         {
-            if ($newuser[notification] == "on")
+            if ($newuser['notification'] == "on")
                 $notification = 1;
             else
                 $notification = 0;
-            if ($newuser['oldpassword'] && $newuser['newpassword'])
+            if (isset($newuser['oldpassword']) && isset($newuser['newpassword']))
             {
                 $newuser['oldpassword'] = hash("whirlpool", $newuser['oldpassword']);
                 $newuser['newpassword'] = hash("whirlpool", $newuser['newpassword']);
                 $retour = $this->base->prepare("SELECT password FROM user WHERE username = ?");
-                $retour->execute(array($newuser[username]));
+                $retour->execute(array($newuser['username']));
                 $data = $retour->fetch();
                 if ($data)
                 {
-                    if ($data[password] === $newuser[oldpassword])
+                    if ($data['password'] === $newuser['oldpassword'])
                     {
                         $sql = "UPDATE user SET username = ?, email = ?, password = ?, notification = ? WHERE session_id = ?";
                         $query = $this->base->prepare($sql);
-                        $query->execute(array($newuser[username], $newuser[email], $newuser[newpassword], $notification, $newuser[session_id]));
+                        $query->execute(array($newuser['username'], $newuser['email'], $newuser['newpassword'], $notification, $newuser['session_id']));
                         return(true);
                     }
                     else
@@ -94,7 +96,7 @@
             {
                 $sql = "UPDATE user SET username = ?, email = ?, notification = ? WHERE session_id = ?";
                 $query = $this->base->prepare($sql);
-                $query->execute(array($newuser[username], $newuser[email], $notification, $newuser[session_id]));
+                $query->execute(array($newuser['username'], $newuser['email'], $notification, $newuser['session_id']));
                 return (true);
             }
         }
@@ -121,7 +123,7 @@
 
         function delete($user)
         {
-            $userid = intval($user[id]);
+            $userid = intval($user['id']);
             $this->deleteImagesfromUserId($userid);
             $sql1 = "DELETE FROM user WHERE id = ?";
             $sql2 = "DELETE FROM images WHERE user_id = ?";
@@ -142,10 +144,10 @@
             $data = $retour->fetch();
             if ($data)
             {
-                if ($data[password] === $usertologin[1] && !$data[user_verification])
+                if ($data['password'] === $usertologin[1] && !$data['user_verification'])
                 {
                     $session_id = uniqid();
-                    $_SESSION[session_id] = $session_id;
+                    $_SESSION['session_id'] = $session_id;
                     $sql = "UPDATE user SET session_id = ? WHERE username = ?";
                     $this->base->prepare($sql)->execute(array($session_id, $usertologin[0]));
                     return (true);
@@ -194,7 +196,7 @@
                 $newpassword = password_hash(uniqid(), PASSWORD_BCRYPT);
                 $encryptedpassword = hash("whirlpool", $newpassword);
                 $sql = "UPDATE user SET password_reset = NULL, password = ? WHERE password_reset = ?";
-                send_mail($result[email], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
+                send_mail($result['email'], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
                 $this->base->prepare($sql)->execute(array($encryptedpassword, $password_reset));
                 return (true);
             }

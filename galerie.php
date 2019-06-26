@@ -13,7 +13,7 @@ if (isset($_GET['action']) && $_GET['action'] === "logout")
     if ($user->logout($_SESSION['session_id']))
         echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
 }
-if ($_GET['like']  && isset($userdata))
+if (isset($_GET['like'])  && isset($userdata))
 {
     $image_id = intval($_GET['like']);
     $like->likeUnlike($userdata['id'], $image_id);

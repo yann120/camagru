@@ -55,7 +55,7 @@
 			</form>
 		</div>
 		<?php
-		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'] && $_POST['email'])
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email']))
 		{
 			$newuser = array($_POST['username'], $_POST['email'], $_POST['password']);
 			if ($user->create($newuser))

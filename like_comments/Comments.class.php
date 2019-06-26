@@ -5,7 +5,9 @@
 
         function __construct()
         {
-            if (!include 'config/database.php')
+            if (file_exists('config/database.php'))
+                include 'config/database.php';
+            else if (file_exists('../config/database.php'))
                 include '../config/database.php';
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
@@ -50,8 +52,8 @@
             $user = $retour->fetch();
             echo "Ok";
             $message = "Bonjour $user[username]!\nTu est populaire, $username_who_comment vient de commenter le montage numero $image_id.\n Son commentaire est :\n$content\n";
-            if ($user[notification])
-                $this->send_mail($user[email], "Nouveau commentaire de $username_who_comment sur Camagru!", $message);
+            if ($user['notification'])
+                $this->send_mail($user['email'], "Nouveau commentaire de $username_who_comment sur Camagru!", $message);
         }
 
         function addComment($content, $image_id, $user_id, $username_who_comment)

@@ -1,14 +1,14 @@
 <?php
     require './user/User.class.php';
     include './partials/navbar.php';
-    if ($_GET && $_GET[action] === "logout")
+    if (isset($_GET['action']) && $_GET['action'] === "logout")
     {
         if ($user->logout($_SESSION['session_id']))
             echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
     }
-    if ($_GET && $_GET[user_verification])
+    if (isset($_GET['user_verification']) && $_GET['user_verification'])
     {
-        if ($user->user_validation($_GET[user_verification]))
+        if ($user->user_validation($_GET['user_verification']))
             $message = "Utilisateur validé!";
         else
             $message = "Lien de vérification erroné";

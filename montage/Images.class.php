@@ -5,7 +5,9 @@
 
         function __construct()
         {
-            if (!include 'config/database.php')
+            if (file_exists('config/database.php'))
+                include 'config/database.php';
+            else if (file_exists('../config/database.php'))
                 include '../config/database.php';
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
@@ -67,7 +69,8 @@
         function upload($user_id, $mask_id, $picture)
         {
             $folderPath = "../public/tmp/".$user_id."/";
-            mkdir($folderPath, 0777, true);
+            if (!file_exists($folderPath))
+                mkdir($folderPath, 0777, true);
             $filename = "tmppicture";
             $image_parts = explode(";base64,", $picture);
             $image_type_aux = explode("image/", $image_parts[0]);
@@ -77,7 +80,8 @@
             file_put_contents($file, $image_base64);
             $picture = $this->montage($file, $mask_id);
             $folderPath = "../public/".$user_id."/";
-            mkdir($folderPath, 0777, true);
+            if (!file_exists($folderPath))
+                mkdir($folderPath, 0777, true);
             $filename = uniqid();
             $file = $folderPath.$filename.".jpg";
             if (imagejpeg($picture, $file))
@@ -97,7 +101,7 @@
             $retour = $this->base->prepare($sql);
             $retour->execute();
             $data = $retour->fetch();
-            return (intval($data[nb_images]));
+            return (intval($data['nb_images']));
         }
 
         function storeImageToDB($path, $user_id)
@@ -156,13 +160,13 @@
             $retour = $this->base->prepare($sql);
             $retour->execute(array($image_id));
             $data = $retour->fetch();
-            if ($data[user_id] === $user_id)
+            if ($data['user_id'] === $user_id)
             {
                 $sql = "DELETE FROM images WHERE id = ?";
                 if ($this->base->prepare($sql)->execute(array($image_id)))
-                    if (file_exists($data[path]))
+                    if (file_exists($data['path']))
                     {
-                        if (unlink($data[path]))
+                        if (unlink($data['path']))
                             header("Location: /montage?message=deleted");
                         else
                             echo "Pas supprimé le fichier physique";

@@ -3,7 +3,7 @@
 <?php
 if ($userdata)
 {
-	if (isset($_GET[action]) && $_GET[action] === "delete")
+	if (isset($_GET['action']) && $_GET['action'] === "delete")
 		{
 			if ($user->delete($userdata))
 				echo "<script type='text/javascript'> document.location = '/index.php'; </script>";
@@ -65,7 +65,7 @@ if ($userdata)
 				</div>
 
 				<label class="checkbox">
-					<input type="checkbox" name="notification" <?php if ($userdata[notification]) echo "checked" ?>>
+					<input type="checkbox" name="notification" <?php if ($userdata['notification']) echo "checked" ?>>
 					Recevoir des notifications
 				</label>
 				<br>
@@ -84,7 +84,11 @@ if ($userdata)
 				</form>
 			</div>
 			<?php 
-			if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['email'])
+			if (isset($_POST['notification']))
+				$notification = $_POST['notification'];
+			else 
+				$notification = "OFF";
+			if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['username']) && isset($_POST['email']))
 			{
 				if (($_POST['oldpassword'] && !$_POST['newpassword']) || (!$_POST['oldpassword'] && $_POST['newpassword']))
 				{
@@ -92,18 +96,18 @@ if ($userdata)
 					return;
 				}
 				if ($_POST['oldpassword'] && $_POST['newpassword'])
-					$usertomodif = array('session_id' => $userdata[session_id], 'username' => $_POST['username'], 'email' => $_POST['email'], 'oldpassword' => $_POST['oldpassword'], 'newpassword' => $_POST['newpassword'], 'notification' => $_POST['notification']);
+					$usertomodif = array('session_id' => $userdata['session_id'], 'username' => $_POST['username'], 'email' => $_POST['email'], 'oldpassword' => $_POST['oldpassword'], 'newpassword' => $_POST['newpassword'], 'notification' => $_POST['notification']);
 				else if (($_POST['oldpassword'] && !$_POST['newpassword']) || (!$_POST['oldpassword'] && $_POST['newpassword']))
 				{
 					echo "<h3 class='title is-3 has-text-centered'>L'ancien et le nouveau mot de passe sont requis</a></h3>";
 					return;
 				}
 				else
-					$usertomodif = array('session_id' => $userdata[session_id], 'username' => $_POST['username'], 'email' => $_POST['email'], 'notification' => $_POST['notification']);
+					$usertomodif = array('session_id' => $userdata['session_id'], 'username' => $_POST['username'], 'email' => $_POST['email'], 'notification' => $notification);
 				if ($user->modif($usertomodif))
 					echo "<h3 class='title is-3 has-text-centered'>Compte modifié. <a href='/index.php'>Cliquez ici pour revenir sur la page d'accueil</a></h3>";
 				else
-					echo "<h3 class='title is-3 has-text-centered'>Erreur</h3>";
+					echo "<h3 class='title is-3 has-text-centered'>Erreur de mot de passe</h3>";
 			}
 }
 else
