@@ -205,7 +205,7 @@
         {
             if ($session_id)
             {
-                $query = $this->base->prepare("SELECT * FROM user WHERE session_id = ?");
+                $query = $this->base->prepare("SELECT id, username, email, session_id, notification FROM user WHERE session_id = ?");
                 $query->execute(array($session_id));
                 $user = $query->fetch();
                 if ($user)
