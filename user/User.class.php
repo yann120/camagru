@@ -44,7 +44,6 @@
             $retour->execute(array($newuser[0], $newuser[1]));
             if ($retour->fetch())
                 return (false);
-            echo "ici";
             $sql = "INSERT INTO user (username, email, password, user_verification) VALUES (?,?,?,?)";
             $query = $this->base->prepare($sql);
             $query->execute($newuser);
