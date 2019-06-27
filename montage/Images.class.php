@@ -139,7 +139,6 @@
             $allpictures = [];
             while ($data = $retour->fetch())
                 array_push($allpictures, $data);
-            // print_r($allpictures);
             return ($allpictures);
         }
 

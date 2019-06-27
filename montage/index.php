@@ -6,7 +6,6 @@ require_once 'Images.class.php';
 if (!$userdata)
 	header("Location: ../user/login.php?message=notloggedin");
     $image = new Images;
-    // print_r($userdata);
     if (isset($_POST['Post']) && $_POST['Post'] === 'Post_Picture')
         $image->upload($userdata['id'], $_POST['mask'], $_POST['picture']);
     $allImagesFromCurrentUser = $image->showByUserId($userdata['id']);
@@ -18,7 +17,6 @@ if (!$userdata)
     <head>
         <meta charset="UTF-8">
         <title>Camagru</title>
-        <!-- <link rel="stylesheet" href="../main.css"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
         <link rel="stylesheet" href="montage.css">
@@ -77,7 +75,6 @@ if (!$userdata)
                 <input hidden type="hidden" name="picture" id="image_to_post" />
                 <input hidden type="text" name="mask" id="maskChoice" value="1" />
                 <div class="buttons">
-                    <!-- <input type="submit" id="postButton" class="fas fa-3x fa-upload" name="upload" /> -->
                     <button type="submit" id="postButton" hidden name="Post" value="Post_Picture">Post</button>
 				</div>
                 </form>
