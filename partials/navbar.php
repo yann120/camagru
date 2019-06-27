@@ -1,7 +1,10 @@
 <?php
   session_start();
   $user = new User();
-  $userdata = $user->userSignedIn($_SESSION['session_id']);
+  if (isset($_SESSION['session_id']))
+    $userdata = $user->userSignedIn($_SESSION['session_id']);
+  else
+    $userdata = NULL;
 ?>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

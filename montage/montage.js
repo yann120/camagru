@@ -74,6 +74,21 @@
       });
   };
 
+
+  function isImage(file) {
+    filename = file.name + '';
+    parts = filename.split('.');
+    extension = parts[parts.length - 1];
+    extension = extension.toLowerCase();
+    if (extension == "jpg" || extension == "jpeg" || extension == "png")
+    {
+        return (true);
+    }
+    else
+    {
+        return (false);
+    }
+  };
   mask_selection.forEach( function(mask){
       mask.addEventListener('click', function () {
       changeMask(mask.id);
@@ -81,7 +96,8 @@
   });
 
   uploadButton.addEventListener('click', function (ev) {
-      if (uploadedFile = image_to_upload.files[0])
+    uploadedFile = image_to_upload.files[0];
+      if (uploadedFile && isImage(uploadedFile))
       {
           fileReader = new FileReader();
           fileReader.onload = (fileLoadedEvent) => {
