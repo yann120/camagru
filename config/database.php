@@ -1,4 +1,6 @@
 <?php
-    $DB_DSN = "mysql:host=localhost;dbname=camagru;charset=utf8";
     $DB_USER = "root";
     $DB_PASSWORD = "424242";
+    $DB_HOST = "mysql:host=localhost";
+    $DB_NAME = "camagru";
+    $DB_DSN = $DB_HOST.";dbname=".$DB_NAME.";charset=utf8";
