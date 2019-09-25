@@ -4,11 +4,13 @@
 
         function __construct()
         {
-            if (!include 'config/database.php')
+            if (file_exists('config/database.php'))
+                include 'config/database.php';
+            else if (file_exists('../config/database.php'))
                 include '../config/database.php';
-            session_start();
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
@@ -43,7 +45,8 @@
             if ($retour->fetch())
                 return (false);
             $sql = "INSERT INTO user (username, email, password, user_verification) VALUES (?,?,?,?)";
-            $this->base->prepare($sql)->execute($newuser);
+            $query = $this->base->prepare($sql);
+            $query->execute($newuser);
             send_mail($newuser[1], "Inscription sur Camagru", "Bonjour $newuser[0]!\n Merci pour ton inscription sur Camagru.\n Pour valider ton compte, merci de cliquer sur ce lien : \n http://localhost:8080/index.php?user_verification=$newuser[3] \n A bientôt!\n");
             return (true);
         }
@@ -64,24 +67,24 @@
 
         function modif($newuser)
         {
-            if ($newuser[notification] == "on")
+            if ($newuser['notification'] == "on")
                 $notification = 1;
             else
                 $notification = 0;
-            if ($newuser['oldpassword'] && $newuser['newpassword'])
+            if (isset($newuser['oldpassword']) && isset($newuser['newpassword']))
             {
                 $newuser['oldpassword'] = hash("whirlpool", $newuser['oldpassword']);
                 $newuser['newpassword'] = hash("whirlpool", $newuser['newpassword']);
                 $retour = $this->base->prepare("SELECT password FROM user WHERE username = ?");
-                $retour->execute(array($newuser[username]));
+                $retour->execute(array($newuser['username']));
                 $data = $retour->fetch();
                 if ($data)
                 {
-                    if ($data[password] === $newuser[oldpassword])
+                    if ($data['password'] === $newuser['oldpassword'])
                     {
                         $sql = "UPDATE user SET username = ?, email = ?, password = ?, notification = ? WHERE session_id = ?";
                         $query = $this->base->prepare($sql);
-                        $query->execute(array($newuser[username], $newuser[email], $newuser[newpassword], $notification, $newuser[session_id]));
+                        $query->execute(array($newuser['username'], $newuser['email'], $newuser['newpassword'], $notification, $newuser['session_id']));
                         return(true);
                     }
                     else
@@ -92,20 +95,44 @@
             {
                 $sql = "UPDATE user SET username = ?, email = ?, notification = ? WHERE session_id = ?";
                 $query = $this->base->prepare($sql);
-                $query->execute(array($newuser[username], $newuser[email], $notification, $newuser[session_id]));
+                $query->execute(array($newuser['username'], $newuser['email'], $notification, $newuser['session_id']));
                 return (true);
             }
-                // verifie si le user ou l'email existe deja mais on est peut etre pas obligé de l'implémenter
-            // $retour = $this->base->query("SELECT * FROM user WHERE username = '$newuser['username']' OR email = '$newuser['email']'");
-            // if ($retour->fetch())
-            //     return (false);
+        }
+
+        private function deleteImagesfromUserId($userid)
+        {
+            $sql = "SELECT path FROM images WHERE user_id = ?";
+            $query = $this->base->prepare($sql);
+            $query->execute(array($userid));
+            $pathlist = $query->fetchAll();
+            foreach ($pathlist as $path) {
+                $path = $path[0];
+                if (file_exists($path))
+                {
+                    if (unlink($path))
+                        echo "Fichier supprimé ".$path;
+                    else
+                        echo "Pas supprimé le fichier physique";
+                }
+                else
+                    echo "non existant";
+            }
         }
 
         function delete($user)
         {
-            $sql = "DELETE FROM user WHERE session_id = ?";
-            if ($this->base->prepare($sql)->execute(array($user[session_id])))
-                return (true);
+            $userid = intval($user['id']);
+            $this->deleteImagesfromUserId($userid);
+            $sql1 = "DELETE FROM user WHERE id = ?";
+            $sql2 = "DELETE FROM images WHERE user_id = ?";
+            $sql3 = "DELETE FROM images_like WHERE user_id = ?";
+            $sql4 = "DELETE FROM comments WHERE user_id = ?";
+            $this->base->prepare($sql1)->execute(array($userid));
+            $this->base->prepare($sql2)->execute(array($userid));
+            $this->base->prepare($sql3)->execute(array($userid));
+            $this->base->prepare($sql4)->execute(array($userid));
+            return (true);
         }
 
         function login($usertologin)
@@ -116,10 +143,10 @@
             $data = $retour->fetch();
             if ($data)
             {
-                if ($data[password] === $usertologin[1] && !$data[user_verification])
+                if ($data['password'] === $usertologin[1] && !$data['user_verification'])
                 {
                     $session_id = uniqid();
-                    $_SESSION[session_id] = $session_id;
+                    $_SESSION['session_id'] = $session_id;
                     $sql = "UPDATE user SET session_id = ? WHERE username = ?";
                     $this->base->prepare($sql)->execute(array($session_id, $usertologin[0]));
                     return (true);
@@ -168,7 +195,7 @@
                 $newpassword = password_hash(uniqid(), PASSWORD_BCRYPT);
                 $encryptedpassword = hash("whirlpool", $newpassword);
                 $sql = "UPDATE user SET password_reset = NULL, password = ? WHERE password_reset = ?";
-                send_mail($result[email], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
+                send_mail($result['email'], "Nouveau mot de passe", "Bonjour!\n Nous avons validé votre demande de reinitialisation de mot de passe sur Camagru.\n Votre nouveau mot de passe est $newpassword \n A bientôt!\n");
                 $this->base->prepare($sql)->execute(array($encryptedpassword, $password_reset));
                 return (true);
             }
@@ -177,7 +204,7 @@
         {
             if ($session_id)
             {
-                $query = $this->base->prepare("SELECT * FROM user WHERE session_id = ?");
+                $query = $this->base->prepare("SELECT id, username, email, session_id, notification FROM user WHERE session_id = ?");
                 $query->execute(array($session_id));
                 $user = $query->fetch();
                 if ($user)

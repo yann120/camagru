@@ -1,7 +1,7 @@
 <?php require 'User.class.php'?>
 <?php include '../partials/navbar.php' ?>
 <?php
-if($_GET[message] === "notloggedin")
+if(isset($_GET['message']) && $_GET['message'] === "notloggedin")
 {
 		echo "<article class='message is-danger'>
 		<div class='message-header'>
@@ -18,10 +18,9 @@ if($_GET[message] === "notloggedin")
     <head>
         <meta charset="UTF-8">
         <title>Camagru</title>
-        <!-- <link rel="stylesheet" href="main.css"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
     </head>
     <body>
 		<div class="container">
@@ -52,16 +51,14 @@ if($_GET[message] === "notloggedin")
 			<input type="submit" class="button is-success" name="submit" value="OK">
 			</div>
 			</form>
+
 			<div class="control">
-				<button class="button is-danger" onclick="location.href='/index.php'">Cancel</button>
-			</div>
-			<div class="control">
-					<a class="button is-danger" href = "/user/reset_password.php">Mot de passe oublié</a>
+					<a class="button is-warning" href = "/user/reset_password.php">Mot de passe oublié</a>
 				</div>
 			</div>
 		</div>
-		<?php 
-		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'])
+		<?php
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['username']) && isset($_POST['password']))
 		{
 			$usertologin = array($_POST['username'], $_POST['password']);
 			if ($user->login($usertologin))

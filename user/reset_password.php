@@ -2,9 +2,9 @@
 <?php require '../partials/helper.php'?>
 <?php include '../partials/navbar.php'?>
 <?php
- if ($_GET[password_reset])
+ if (isset($_GET['password_reset']))
  {
-     if ($user->resetPasswordRequestP2($_GET[password_reset]))
+     if ($user->resetPasswordRequestP2($_GET['password_reset']))
          $message = "Vous avez recu votre nouveau mot de passe par mail";
      else
          $message = "Lien de reinitialisation erroné";
@@ -15,10 +15,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Camagru</title>
-        <!-- <link rel="stylesheet" href="main.css"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
     </head>
     <body>
 		<h1 class="title is-1 has-text-centered">Reinitialiser mot de passe</h1>
@@ -27,27 +26,21 @@
 			<div class="field">
 			<label class="label">Email</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-danger" type="email" name="email" required placeholder="Email">
+				<input class="input" type="email" name="email" required placeholder="Email">
 				<span class="icon is-small is-left">
 				<i class="fas fa-envelope"></i>
 				</span>
-				<span class="icon is-small is-right">
-				<i class="fas fa-exclamation-triangle"></i>
-				</span>
 			</div>
-			<p class="help is-danger">This email is invalid</p>
 			</div>
 			<div class="control">
 			<input type="submit" class="button is-success" name="submit" value="OK">
-			</div>
-			<div class="control">
 				<button class="button is-danger" onclick="location.href='/index.php'"> Cancel</button>
 			</div>
 			</div>
 			</form>
 		</div>
 		<?php 
-		if ($_POST['submit'] === "OK" && $_POST['email'])
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['email']))
 		{
 			$email = $_POST['email'];
 			if ($user->resetPasswordRequestP1($email))
@@ -55,9 +48,8 @@
 			else
 				echo "<h3 class='title is-3 has-text-centered'>Ce compte n'existe pas</h3>";
         }
-        if ($message)
+        if (isset($message))
             echo "<h3 class='title is-3 has-text-centered'>$message</h3>";
 		?>
     </body>
-		
 </html>

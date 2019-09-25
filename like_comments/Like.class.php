@@ -1,21 +1,19 @@
 <?php
     Class Like
-    {   
+    {
         private $base;
 
         function __construct()
         {
-            session_start();
             if (!include 'config/database.php')
                 include '../config/database.php';
             try {
                 $this->base = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                $this->base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(exception $e) {
                 die('Erreur '.$e->getMessage());
               }
-              $this->base->exec("SET CHARACTER SET utf8");
-              
         }
 
         function __get($attribut)
@@ -56,6 +54,15 @@
                 $sql = "INSERT INTO `images_like` (`id`, `user_id`, `image_id`) VALUES (NULL, ?, ?);";
                 $this->base->prepare($sql)->execute(array($user_id, $image_id));
             }
+        }
+
+        function likeCounter($image_id)
+        {
+            $sql = "SELECT COUNT(image_id) FROM `images_like` WHERE image_id = ?";
+            $query = $this->base->prepare($sql);
+            $query->execute(array(strval($image_id)));
+            $result = $query->fetch();
+            return ($result[0]);
         }
     }
 ?>

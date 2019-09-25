@@ -11,11 +11,11 @@ function send_mail($email, $subject, $message)
 function debug($tab)
 {
     ob_start();
-    var_export($tab); 
+    var_export($tab);
     $tab_debug=ob_get_contents();
     ob_end_clean();
     $fichier=fopen('test.log','w');
-    fwrite($fichier,$tab_debug); 
+    fwrite($fichier,$tab_debug);
     fclose($fichier);
 }
 ?>

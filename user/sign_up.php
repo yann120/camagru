@@ -6,10 +6,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Camagru</title>
-        <!-- <link rel="stylesheet" href="main.css"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
     </head>
     <body>
 		<h1 class="title is-1 has-text-centered">Sign up</h1>
@@ -18,29 +17,21 @@
 			<div class="field">
 			<label class="label">Username</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-success" type="text" name="username" required placeholder="Username">
+				<input class="input" type="text" name="username" required placeholder="Username">
 				<span class="icon is-small is-left">
 				<i class="fas fa-user"></i>
 				</span>
-				<span class="icon is-small is-right">
-				<i class="fas fa-check"></i>
-				</span>
 			</div>
-			<p class="help is-success">This username is available</p>
 			</div>
 
 			<div class="field">
 			<label class="label">Email</label>
 			<div class="control has-icons-left has-icons-right">
-				<input class="input is-danger" type="email" name="email" required placeholder="Email">
+				<input class="input" type="email" name="email" required placeholder="Email">
 				<span class="icon is-small is-left">
 				<i class="fas fa-envelope"></i>
 				</span>
-				<span class="icon is-small is-right">
-				<i class="fas fa-exclamation-triangle"></i>
-				</span>
 			</div>
-			<p class="help is-danger">This email is invalid</p>
 			</div>
 
 			<div class="field">
@@ -62,8 +53,8 @@
 			</div>
 			</form>
 		</div>
-		<?php 
-		if ($_POST['submit'] === "OK" && $_POST['username'] && $_POST['password'] && $_POST['email'])
+		<?php
+		if (isset($_POST['submit']) && $_POST['submit'] === "OK" && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email']))
 		{
 			$newuser = array($_POST['username'], $_POST['email'], $_POST['password']);
 			if ($user->create($newuser))
@@ -73,5 +64,4 @@
 		}
 		?>
     </body>
-		
 </html>
